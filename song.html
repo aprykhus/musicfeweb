@@ -3,47 +3,30 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
         var curec = 1;
-        $(document).ready(function(){
+        function getSong(curec) {
             $.ajax({url: "song.php", data: "id=" + curec, dataType: "json", method: "POST", success: function(result){
                     $("#txtSongID").val(result.SongID);
                     $("#txtArtist").val(result.Artist);
                     $("#txtTitle").val(result.Title);
                     $("#txtYear").val(result.Year);
                     $("#txtPeak").val(result.Peak);
-                }});
+            }});
+        }
+        $(document).ready(function(){
+            getSong(curec);
             $("#btnNext").click(function(){
                 curec++;
-                $.ajax({url: "song.php", data: "id=" + curec, dataType: "json", method: "POST", success: function(result){
-                    $("#txtSongID").val(result.SongID);
-                    $("#txtArtist").val(result.Artist);
-                    $("#txtTitle").val(result.Title);
-                    $("#txtYear").val(result.Year);
-                    $("#txtPeak").val(result.Peak);
-                }});
+                getSong(curec);
             });
             $("#btnPrevious").click(function(){
                 if (curec > 1) 
                     curec--;
-                $.ajax({url: "song.php", data: "id=" + curec, dataType: "json", success: function(result){
-                    $("#txtSongID").val(result.SongID);
-                    $("#txtArtist").val(result.Artist);
-                    $("#txtTitle").val(result.Title);
-                    $("#txtYear").val(result.Year);
-                    $("#txtPeak").val(result.Peak);
-                }});
+                getSong(curec);
             });
             $("#btnGo").click(function(){
                 curec = $("#txtSongID").val();
                 if (curec > 0)
-                {
-                    $.ajax({url: "song.php", data: "id=" + curec, dataType: "json", success: function(result){
-                        $("#txtSongID").val(result.SongID);
-                        $("#txtArtist").val(result.Artist);
-                        $("#txtTitle").val(result.Title);
-                        $("#txtYear").val(result.Year);
-                        $("#txtPeak").val(result.Peak);
-                    }});
-                }
+                    getSong(curec);
             });
         });
     </script>
