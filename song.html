@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        var curec = 1;
+        $(document).ready(function(){
+            $.ajax({url: "song.php", data: "id=" + curec, dataType: "json", method: "POST", success: function(result){
+                    $("#txtSongID").val(result.SongID);
+                    $("#txtArtist").val(result.Artist);
+                    $("#txtTitle").val(result.Title);
+                    $("#txtYear").val(result.Year);
+                    $("#txtPeak").val(result.Peak);
+                }});
+            $("#btnNext").click(function(){
+                curec++;
+                $.ajax({url: "song.php", data: "id=" + curec, dataType: "json", method: "POST", success: function(result){
+                    $("#txtSongID").val(result.SongID);
+                    $("#txtArtist").val(result.Artist);
+                    $("#txtTitle").val(result.Title);
+                    $("#txtYear").val(result.Year);
+                    $("#txtPeak").val(result.Peak);
+                }});
+            });
+            $("#btnPrevious").click(function(){
+                if (curec > 1) 
+                    curec--;
+                $.ajax({url: "song.php", data: "id=" + curec, dataType: "json", success: function(result){
+                    $("#txtSongID").val(result.SongID);
+                    $("#txtArtist").val(result.Artist);
+                    $("#txtTitle").val(result.Title);
+                    $("#txtYear").val(result.Year);
+                    $("#txtPeak").val(result.Peak);
+                }});
+            });
+            $("#btnGo").click(function(){
+                curec = $("#txtSongID").val();
+                if (curec > 0)
+                {
+                    $.ajax({url: "song.php", data: "id=" + curec, dataType: "json", success: function(result){
+                        $("#txtSongID").val(result.SongID);
+                        $("#txtArtist").val(result.Artist);
+                        $("#txtTitle").val(result.Title);
+                        $("#txtYear").val(result.Year);
+                        $("#txtPeak").val(result.Peak);
+                    }});
+                }
+            });
+        });
+    </script>
+    </head>
+<body>
+
+<form>
+SongID: <input type="text" id="txtSongID" style="width: 50px"><button type="button" id="btnGo">Go</button><br><br>
+<span style="padding-left: 13px">Artist:</span><span style="padding-left: 4px"><input type="text" id="txtArtist" style="width: 300px"></span><br><br>
+<span style="padding-left: 20px">Title:</span><span style="padding-left: 4px"><input type="text" id="txtTitle" style="width: 300px"></span><br><br>
+<span style="padding-left: 20px">Year:</span><span style="padding-left: 4px"><input type="text" id="txtYear" style="width: 50px"></span><br><br>
+<span style="padding-left: 20px">Peak:</span><span style="padding-left: 3px"><input type="text" id="txtPeak" style="width: 50px"></span><br><br>
+<button type="button" id="btnFirst">First</button>
+<button type="button" id="btnPrevious">Previous</button>
+<button type="button" id="btnNext">Next</button>
+<button type="button" id="btnLast">Last</button>
+
+</form>
+
+</body>
+</html>
