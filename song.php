@@ -14,7 +14,7 @@ if( $conn === false )
 
 /* Query Music db for song */
 $tsql = "SELECT * FROM vw_ListSongs WHERE SongID = ".$id;
-$stmt = sqlsrv_query( $conn, $tsql);
+$stmt = sqlsrv_query($conn, $tsql);
 if( $stmt === false)
 {
     echo "Error in executing query.</br>";
@@ -25,6 +25,19 @@ if( $stmt === false)
 $row = sqlsrv_fetch_array($stmt);
 $space = " ";
 echo json_encode($row);
+
+/* Fetch min/max songIDs */
+
+/* $tsql = "Select MIN(SongID) AS minSongID, Select MAX(SongID) AS maxSongID FROM vw_ListSongs";
+$stmt = sqlsrv_query( $conn, $tsql);
+if( $stmt === false)
+{
+    echo "Error in executing query.</br>";
+    dir( print_r( sqlsrv_errors(), true));
+}
+$row = sqlsrv_fetch_array($stmt);
+echo json_encode($row); */
+
 
 /* Free statement and connection resources. */
 sqlsrv_free_stmt( $stmt);
