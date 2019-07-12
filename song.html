@@ -7,16 +7,16 @@
         var maxSongID = 0;
         function getSong(curec) {
             $.ajax({url: "song.php", data: "id=" + curec + "&qtype=1", dataType: "json", method: "post", success: function(result){
-                    $("#txtSongID").val(result.SongID);
-                    $("#txtArtist").val(result.Artist);
-                    $("#txtTitle").val(result.Title);
-                    $("#txtYear").val(result.Year);
-                    $("#txtPeak").val(result.Peak);
+                $("#txtSongID").val(result.SongID);
+                $("#txtArtist").val(result.Artist);
+                $("#txtTitle").val(result.Title);
+                $("#txtYear").val(result.Year);
+                $("#txtPeak").val(result.Peak);
             }});
         }
         $.ajax({url: "song.php", data: "id=" + curec + "&qtype=2", dataType: "json", method: "post", success: function(result){
-                    minSongID = result.minSongID;
-                    maxSongID = result.maxSongID;
+            minSongID = result.minSongID;
+            maxSongID = result.maxSongID;
         }});
         $(document).ready(function(){
 
