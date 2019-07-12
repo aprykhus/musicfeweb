@@ -3,8 +3,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
         var curec = 1;
+        var minSongID = 0;
+        var maxSongID = 0;
         function getSong(curec) {
-            $.ajax({url: "song.php", data: "id=" + curec, dataType: "json", method: "POST", success: function(result){
+            $.ajax({url: "song.php", data: "id=" + curec + "&qtype=1", dataType: "json", method: "post", success: function(result){
                     $("#txtSongID").val(result.SongID);
                     $("#txtArtist").val(result.Artist);
                     $("#txtTitle").val(result.Title);
@@ -12,9 +14,17 @@
                     $("#txtPeak").val(result.Peak);
             }});
         }
+        function getMinMax() {
+            $.ajax({url: "song.php", data: "id=" + curec + "&qtype=2", dataType: "json", method: "post", success: function(result){
+                    minSongID = result.minSongID;
+                    maxSongID = result.maxSongID;
+            }});
+        }
         $(document).ready(function(){
             getSong(curec);
+            getMinMax();
             $("#btnNext").click(function(){
+                if (curec < maxSongID);
                 curec++;
                 getSong(curec);
             });
@@ -27,6 +37,14 @@
                 curec = $("#txtSongID").val();
                 if (curec > 0)
                     getSong(curec);
+            });
+            $("#btnFirst").click(function(){
+                curec = minSongID;
+                getSong(curec);
+            });
+            $("#btnLast").click(function(){
+                curec = maxSongID;
+                getSong(curec);
             });
         });
     </script>
