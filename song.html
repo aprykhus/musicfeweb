@@ -6,31 +6,59 @@
         var minSongID = 0;
         var maxSongID = 0;
         function getSong(curec) {
-            $.ajax({url: "song.php", data: "id=" + curec + "&qtype=1", dataType: "json", method: "post", success: function(result){
+            var retval = 0;
+            $.ajax({url: "song.php", data: "id=" + curec + "&qtype=1", dataType: "json", method: "post", async: false, success: function(result){
+
+                if (result == null)
+                {
+                    retval = 1;
+                }
                 $("#txtSongID").val(result.SongID);
                 $("#txtArtist").val(result.Artist);
                 $("#txtTitle").val(result.Title);
                 $("#txtYear").val(result.Year);
                 $("#txtPeak").val(result.Peak);
             }});
+            if (retval == 1)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
-        $.ajax({url: "song.php", data: "id=" + curec + "&qtype=2", dataType: "json", method: "post", success: function(result){
-            minSongID = result.minSongID;
-            maxSongID = result.maxSongID;
-        }});
         $(document).ready(function(){
-
+            $.ajax({url: "song.php", data: "id=" + curec + "&qtype=2", dataType: "json", method: "post", async: false, success: function(result){
+                minSongID = result.minSongID;
+                maxSongID = result.maxSongID;
+            }});
             curec = minSongID;
             getSong(curec);
             $("#btnNext").click(function(){
-                if (curec < maxSongID);
-                curec++;
-                getSong(curec);
+                var retval = 0;
+                if (curec < maxSongID)
+                {
+                    retval = getSong(++curec);
+                    if (retval == 1)
+                    {
+                        while (retval == 1)
+                            retval = getSong(++curec);
+                    }
+                }
             });
             $("#btnPrevious").click(function(){
-                if (curec > 1) 
-                    curec--;
-                getSong(curec);
+                var retval = 0;
+                if (curec > minSongID)
+                {
+                    retval = getSong(--curec);
+                    if (retval == 1)
+                    {
+                        while (retval == 1)
+                            retval = getSong(--curec);
+                    }
+
+                }
             });
             $("#btnGo").click(function(){
                 curec = $("#txtSongID").val();
