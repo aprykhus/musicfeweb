@@ -6,27 +6,48 @@
         var minSongID = 0;
         var maxSongID = 0;
         function getSong(curec) {
-            var retval = 0;
-            $.ajax({url: "song.php", data: "id=" + curec + "&qtype=1", dataType: "json", method: "post", async: false, success: function(result){
+            function loadJSON() {
+            var data_file = "http://localhost/musicfe/song.php?id=" + curec + "&qtype=1";
+            var http_request = new XMLHttpRequest();
+            try{
+               // Opera 8.0+, Firefox, Chrome, Safari
+               http_request = new XMLHttpRequest();
+            }catch (e) {
+               // Internet Explorer Browsers
+               try{
+                  http_request = new ActiveXObject("Msxml2.XMLHTTP");
+					
+               }catch (e) {
+				
+                  try{
+                     http_request = new ActiveXObject("Microsoft.XMLHTTP");
+                  }catch (e) {
+                     // Something went wrong
+                     alert("Your browser broke!");
+                     return false;
+                  }
+					
+               }
+            }
+            http_request.onreadystatechange = function() {
+			
+               if (http_request.readyState == 4  ) {
+                  // Javascript function JSON.parse to parse JSON data
+                  var jsonObj = JSON.parse(http_request.responseText);
 
-                if (result == null)
-                {
-                    retval = 1;
-                }
-                $("#txtSongID").val(result.SongID);
-                $("#txtArtist").val(result.Artist);
-                $("#txtTitle").val(result.Title);
-                $("#txtYear").val(result.Year);
-                $("#txtPeak").val(result.Peak);
-            }});
-            if (retval == 1)
-            {
-                return 1;
+                  // jsonObj variable now contains the data structure and can
+                  // be accessed as jsonObj.name and jsonObj.country.
+                  document.getElementById("txtSongID").value = jsonObj.SongID;
+                  document.getElementById("txtArtist").innerHTML = jsonObj.Artist;
+                  document.getElementById("txtTitle").innerHTML = jsonObj.Title;
+                  document.getElementById("txtYear").innerHTML = jsonObj.Artist;
+                  document.getElementById("txtPeak").innerHTML = jsonObj.Peak;
+               }
             }
-            else
-            {
-                return 0;
-            }
+			
+            http_request.open("GET", data_file, true);
+            http_request.send();
+         }
         }
         $(document).ready(function(){
             $.ajax({url: "song.php", data: "id=" + curec + "&qtype=2", dataType: "json", method: "post", async: false, success: function(result){
@@ -36,28 +57,15 @@
             curec = minSongID;
             getSong(curec);
             $("#btnNext").click(function(){
-                var retval = 0;
                 if (curec < maxSongID)
                 {
                     retval = getSong(++curec);
-                    if (retval == 1)
-                    {
-                        while (retval == 1)
-                            retval = getSong(++curec);
-                    }
                 }
             });
             $("#btnPrevious").click(function(){
-                var retval = 0;
                 if (curec > minSongID)
                 {
                     retval = getSong(--curec);
-                    if (retval == 1)
-                    {
-                        while (retval == 1)
-                            retval = getSong(--curec);
-                    }
-
                 }
             });
             $("#btnGo").click(function(){
