@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        var curec = 1;
+        var minSongID = 0;
+        var maxSongID = 0;
+        function getSong(curec) {
+            var retval = 0;
+            $.ajax({url: "song.php", data: "id=" + curec + "&qtype=1", dataType: "json", method: "post", async: false, success: function(result){
+
+                if (result == null)
+                {
+                    retval = 1;
+                }
+                $("#txtSongID").val(result.SongID);
+                $("#txtArtist").val(result.Artist);
+                $("#txtTitle").val(result.Title);
+                $("#txtYear").val(result.Year);
+                $("#txtPeak").val(result.Peak);
+            }});
+            if (retval == 1)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        $(document).ready(function(){
+            $.ajax({url: "song.php", data: "id=" + curec + "&qtype=2", dataType: "json", method: "post", async: false, success: function(result){
+                minSongID = result.minSongID;
+                maxSongID = result.maxSongID;
+            }});
+            curec = minSongID;
+            getSong(curec);
+            $("#btnNext").click(function(){
+                var retval = 0;
+                if (curec < maxSongID)
+                {
+                    retval = getSong(++curec);
+                    if (retval == 1)
+                    {
+                        while (retval == 1)
+                            retval = getSong(++curec);
+                    }
+                }
+            });
+            $("#btnPrevious").click(function(){
+                var retval = 0;
+                if (curec > minSongID)
+                {
+                    retval = getSong(--curec);
+                    if (retval == 1)
+                    {
+                        while (retval == 1)
+                            retval = getSong(--curec);
+                    }
+
+                }
+            });
+            $("#btnGo").click(function(){
+                curec = $("#txtSongID").val();
+                if (curec > 0)
+                    getSong(curec);
+            });
+            $("#btnFirst").click(function(){
+                curec = minSongID;
+                getSong(curec);
+            });
+            $("#btnLast").click(function(){
+                curec = maxSongID;
+                getSong(curec);
+            });
+        });
+    </script>
+    </head>
+<body>
+
+<form>
+    SongID: <input type="text" id="txtSongID" style="width: 50px"><button type="button" id="btnGo">Go</button><br><br>
+    <span style="padding-left: 13px">Artist:</span><span style="padding-left: 4px"><input type="text" id="txtArtist" style="width: 300px"></span><br><br>
+    <span style="padding-left: 20px">Title:</span><span style="padding-left: 4px"><input type="text" id="txtTitle" style="width: 300px"></span><br><br>
+    <span style="padding-left: 20px">Year:</span><span style="padding-left: 4px"><input type="text" id="txtYear" style="width: 50px"></span><br><br>
+    <span style="padding-left: 20px">Peak:</span><span style="padding-left: 3px"><input type="text" id="txtPeak" style="width: 50px"></span><br><br>
+    <button type="button" id="btnFirst">First</button>
+    <button type="button" id="btnPrevious">Previous</button>
+    <button type="button" id="btnNext">Next</button>
+    <button type="button" id="btnLast">Last</button>
+</form>
+
+</body>
+</html>
