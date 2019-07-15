@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+</head>
+<body onload="firstSong()">
+
+<form>
+   SongID: <input type="text" id="txtSongID" style="width: 50px"><button type="button" id="btnGo" onclick="goSong()">Go</button><br><br>
+   <span style="padding-left: 13px">Artist:</span><span style="padding-left: 4px"><input type="text" id="txtArtist" style="width: 300px"></span><br><br>
+   <span style="padding-left: 20px">Title:</span><span style="padding-left: 4px"><input type="text" id="txtTitle" style="width: 300px"></span><br><br>
+   <span style="padding-left: 20px">Year:</span><span style="padding-left: 4px"><input type="text" id="txtYear" style="width: 50px"></span><br><br>
+   <span style="padding-left: 20px">Peak:</span><span style="padding-left: 3px"><input type="text" id="txtPeak" style="width: 50px"></span><br><br>
+   <button type="button" id="btnFirst" onclick="firstSong()">First</button>
+   <button type="button" id="btnPrevious" onclick="prevSong()">Previous</button>
+   <button type="button" id="btnNext" onclick="nextSong()">Next</button>
+   <button type="button" id="btnLast" onclick="lastSong()">Last</button>
+</form>
+
+<script type="text/javascript" src="webrequest.js"></script>
+
+</body>
+</html>
