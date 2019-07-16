@@ -1,6 +1,7 @@
 <?php
 $id = $_REQUEST["id"]; # songID to query in db
 $qtype = $_REQUEST["qtype"]; # Type of query 1 = song row 2 = min/max SongID
+$qupdate = $_REQUEST["edit"]; # JSON data to update song
 /* Specify the server and connection string attributes. */
 $serverName = "(local)\SQLEXPRESS";
 $connectionInfo = array( "Database"=>"Music");
@@ -33,7 +34,6 @@ if ($qtype == 1)
 if ($qtype == 2)
 {
     /* Fetch min/max songIDs */
-
     $tsql = "Select MIN(SongID) AS minSongID, MAX(SongID) AS maxSongID FROM vw_ListSongs";
     $stmt = sqlsrv_query( $conn, $tsql);
     if( $stmt === false)
@@ -43,6 +43,27 @@ if ($qtype == 2)
     }
     $row = sqlsrv_fetch_array($stmt);
     echo json_encode($row);
+}
+
+if ($qtype == 3)
+{
+        # Update button server-side code
+        $basesql = "EXEC usp_UpdateSongList";
+        $jsonarr = json_decode($qupdate, true);
+        $songid = print_r($jsonarr['songid'], true);
+        $artist = print_r($jsonarr['artist'], true);
+        $title = print_r($jsonarr['title'], true);
+        $year = print_r($jsonarr['year'], true);
+        $peak = print_r($jsonarr['peak'], true);
+        $tsql = $basesql." ".$songid.", '".$artist."', '".$title."', '".$year."', ".$peak;
+        $stmt = sqlsrv_query( $conn, $tsql);
+        if( $stmt === false)
+        {
+            echo "Error in executing query.</br>";
+            die( print_r( sqlsrv_errors(), true));
+        }
+/*         $row = sqlsrv_fetch_array($stmt);
+        echo json_encode($row); */
 }
 
 /* Free statement and connection resources. */

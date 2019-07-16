@@ -6,12 +6,41 @@ var jsonNull = 0;
 var lastCurec = 0;
 
 // functions
+
+function encode(strVal)
+{
+/*
+-------------------------------------------
+using a regular expression I search
+for the & and encode it with %26.
+--------------------------------------------
+*/
+    if (strVal.indexOf('&') > -1)
+    {
+        var searchStr = "&";
+        var replaceStr = "%26";
+        var re = new RegExp(searchStr, "g");
+        var result = strVal.replace(re, replaceStr);
+    }else{
+        var result = strVal;
+    }
+ 
+    return result;
+}
+
 function loadJSON(idx, qryType, direction) {
+   var szSongID 
+   var szArtist 
+   var szTitle  
+   var szYear   
+   var szPeak   
    var data_file = "http://localhost/musicfe/sandbox/song.php";
    if (qryType == 1)
-      var params = "id=" + idx + "&qtype=1";
+      var params = "id=" + idx + "&qtype=1&edit=";
    else if (qryType == 2)
-      var params = "id=" + idx + "&qtype=2";
+      var params = "id=" + idx + "&qtype=2&edit=";
+   else if (qryType == 3)
+      var params = "id=" + idx + "&qtype=3" + "&edit=";
    var http_request = new XMLHttpRequest();
    try{
       // Opera 8.0+, Firefox, Chrome, Safari
@@ -36,6 +65,7 @@ function loadJSON(idx, qryType, direction) {
    http_request.onreadystatechange = function() {
       if (http_request.readyState == 4  ) {
          // Javascript function JSON.parse to parse JSON data
+         if (qryType == 1 || qryType == 2)
          var jsonObj = JSON.parse(http_request.responseText);
 
          // jsonObj variable now contains the data structure and can
@@ -44,9 +74,9 @@ function loadJSON(idx, qryType, direction) {
          {
          document.getElementById("txtSongID").value = jsonObj.SongID;
          document.getElementById("txtArtist").value = jsonObj.Artist;
-         document.getElementById("txtTitle").value = jsonObj.Title;
-         document.getElementById("txtYear").value = jsonObj.Year;
-         document.getElementById("txtPeak").value = jsonObj.Peak;
+         document.getElementById("txtTitle").value  = jsonObj.Title;
+         document.getElementById("txtYear").value   = jsonObj.Year;
+         document.getElementById("txtPeak").value   = jsonObj.Peak;
          }
          else if (qryType == 2)
          {
@@ -80,10 +110,28 @@ function loadJSON(idx, qryType, direction) {
       }
    }
 
-   http_request.addEventListener("load", reqListener); // handling null SongIDs
-   http_request.open("POST", data_file, true);
-   http_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // req'd for POST with XHR
-   http_request.send(params);
+   if (qryType == 1 || qryType == 2)
+   {
+      http_request.addEventListener("load", reqListener); // handling null SongIDs
+      http_request.open("POST", data_file, true);
+      http_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // req'd for POST with XHR
+      http_request.send(params);
+   }
+   if (qryType == 3)
+   {
+      szSongID = document.getElementById("txtSongID").value;
+      szArtist = encode(document.getElementById("txtArtist").value);
+      szTitle  = encode(document.getElementById("txtTitle").value);
+      szYear   = document.getElementById("txtYear").value;
+      szPeak   = document.getElementById("txtPeak").value;
+      http_request.open("POST", data_file, true);
+      // http_request.setRequestHeader("Content-Type", "application/json");
+      http_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // req'd for POST with XHR
+      params+=JSON.stringify({songid: szSongID, artist: szArtist, title: szTitle, year: szYear, peak: szPeak});
+      // var cleanparams = encodeURIComponent(params);
+      http_request.send(params);
+   }
+
 }
 
  loadJSON(curec, 2); // set min/max variables
@@ -112,4 +160,7 @@ function firstSong() {
 function lastSong() {
    curec = maxSongID;
    loadJSON(curec, 1, 5);
+}
+function updateSong() {
+   loadJSON(curec, 3, 0);
 }
