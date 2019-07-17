@@ -47,23 +47,23 @@ if ($qtype == 2)
 
 if ($qtype == 3)
 {
-        # Update button server-side code
-        $basesql = "EXEC usp_UpdateSongList";
-        $jsonarr = json_decode($qupdate, true);
-        $songid = print_r($jsonarr['songid'], true);
-        $artist = print_r($jsonarr['artist'], true);
-        $title = print_r($jsonarr['title'], true);
-        $year = print_r($jsonarr['year'], true);
-        $peak = print_r($jsonarr['peak'], true);
-        $tsql = $basesql." ".$songid.", '".$artist."', '".$title."', '".$year."', ".$peak;
-        $stmt = sqlsrv_query( $conn, $tsql);
-        if( $stmt === false)
-        {
-            echo "Error in executing query.</br>";
-            die( print_r( sqlsrv_errors(), true));
-        }
+    # Update button server-side code
+    $basesql = "EXEC usp_UpdateSongList";
+    $jsonarr = json_decode($qupdate, true);
+    $songid = print_r($jsonarr['songid'], true);
+    $artist = print_r($jsonarr['artist'], true);
+    $title = print_r($jsonarr['title'], true);
+    $year = print_r($jsonarr['year'], true);
+    $peak = print_r($jsonarr['peak'], true);
+    $tsql = $basesql." ".$songid.", '".$artist."', '".$title."', '".$year."', ".$peak;
+    $stmt = sqlsrv_query( $conn, $tsql);
+    if( $stmt === false)
+    {
+        echo "Error in executing query.</br>";
+        die( print_r( sqlsrv_errors(), true));
+    }
 /*         $row = sqlsrv_fetch_array($stmt);
-        echo json_encode($row); */
+    echo json_encode($row); */
 }
 
 /* Free statement and connection resources. */

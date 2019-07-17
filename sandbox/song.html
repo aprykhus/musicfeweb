@@ -1,19 +1,34 @@
 <!DOCTYPE html>
 <head>
+   <link rel="stylesheet" type="text/css" href="song.css">
 </head>
 <body onload="firstSong()">
 
 <form>
-   SongID: <input type="text" id="txtSongID" style="width: 50px"><button type="button" id="btnGo" onclick="goSong()">Go</button><br><br>
-   <span style="padding-left: 13px">Artist:</span><span style="padding-left: 4px"><input type="text" id="txtArtist" style="width: 300px"></span><br><br>
-   <span style="padding-left: 20px">Title:</span><span style="padding-left: 4px"><input type="text" id="txtTitle" style="width: 300px"></span><br><br>
-   <span style="padding-left: 20px">Year:</span><span style="padding-left: 4px"><input type="text" id="txtYear" style="width: 50px"></span><br><br>
-   <span style="padding-left: 20px">Peak:</span><span style="padding-left: 3px"><input type="text" id="txtPeak" style="width: 50px"></span><br><br>
-   <button type="button" id="btnFirst" onclick="firstSong()">First</button>
-   <button type="button" id="btnPrevious" onclick="prevSong()">Previous</button>
-   <button type="button" id="btnNext" onclick="nextSong()">Next</button>
-   <button type="button" id="btnLast" onclick="lastSong()">Last</button>
-   <button type="button" id="btnLast" onclick="updateSong()">Update</button>
+   <div style="float:left; padding-top: 40px">
+         <button type="button" class="btn1" id="btnLast" onclick="updateSong()" tabindex="13">Update</button><br><br>
+         <button type="button" class="btn1" id="btnAddSong" tabindex="14">Add Song</button><br><br>
+         <button type="button" class="btn1" id="btnDelete" tabindex="15">Delete</button><br><br>
+   </div>
+   <div style="float:left">
+      <div>
+         <span style="padding-left: 11px">SongID:</span> <input type="text" id="txtSongID" style="width: 50px" tabindex="1">
+         <button type="button" class="btn2" id="btnGo" style="width:40px" onclick="goSong()" tabindex="2">Go</button>
+         <button type="button" class="btn2" id="btnClear" style="width:50px" tabindex="3">Clear</button>
+         <button type="button" class="btn2" id="btnSearch" tabindex="4">Search</button>
+         <br><br>
+         <span style="padding-left: 28px">Artist:</span><span style="padding-left: 4px"><input type="text" id="txtArtist" style="width: 300px" tabindex="5"></span><br><br>
+         <span style="padding-left: 36px">Title:</span><span style="padding-left: 4px"><input type="text" id="txtTitle" style="width: 300px" tabindex="6"></span><br><br>
+         <span style="padding-left: 36px">Year:</span><span style="padding-left: 4px"><input type="text" id="txtYear" style="width: 50px" tabindex="7"></span><br><br>
+         <span style="padding-left: 33px">Peak:</span><span style="padding-left: 4px"><input type="text" id="txtPeak" style="width: 50px" tabindex="8"></span><br><br>
+      </div>
+      <div>
+         <button type="button" class="btn3" id="btnFirst" onclick="firstSong()" tabindex="9">First</button>
+         <button type="button" class="btn3" id="btnPrevious" onclick="prevSong()" tabindex="10">Previous</button>
+         <button type="button" class="btn3" id="btnNext" onclick="nextSong()" tabindex="11">Next</button>
+         <button type="button" class="btn3" id="btnLast" onclick="lastSong()" tabindex="12">Last</button>
+      </div>
+   </div>
 </form>
 
 <script type="text/javascript" src="webrequest.js"></script>
