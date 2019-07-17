@@ -34,6 +34,8 @@ function loadJSON(idx, qryType, direction) {
       var params = "id=" + idx + "&qtype=2&edit=";
    else if (qryType == 3)
       var params = "id=" + idx + "&qtype=3" + "&edit=";
+   else if (qryType == 4)
+      var params = "id=" + idx + "&qtype=4" + "&edit=";
    var http_request = new XMLHttpRequest();
    try{
       // Opera 8.0+, Firefox, Chrome, Safari
@@ -55,19 +57,26 @@ function loadJSON(idx, qryType, direction) {
 
    http_request.onreadystatechange = function() {
       if (http_request.readyState == 4  ) {
-         // Javascript function JSON.parse to parse JSON data
-         if (qryType == 1 || qryType == 2)
-         var jsonObj = JSON.parse(http_request.responseText);
-
-         // jsonObj variable now contains the data structure and can
-         // be accessed as jsonObj.name and jsonObj.country.
-         if (qryType == 1)
+         // branch by query type
+         if (qryType == 1 || qryType == 2 || qryType == 4)
          {
-         document.getElementById("txtSongID").value = jsonObj.SongID;
-         document.getElementById("txtArtist").value = jsonObj.Artist;
-         document.getElementById("txtTitle").value  = jsonObj.Title;
-         document.getElementById("txtYear").value   = jsonObj.Year;
-         document.getElementById("txtPeak").value   = jsonObj.Peak;
+            // Javascript function JSON.parse to parse JSON data
+            var jsonObj = JSON.parse(http_request.responseText);
+         }
+
+         if (qryType == 1 || qryType == 4)
+         {
+            // jsonObj variable now contains the data structure and can
+            // be accessed as jsonObj.SongID and jsonObj.Artist, etc...
+            document.getElementById("txtSongID").value = jsonObj.SongID;
+            document.getElementById("txtArtist").value = jsonObj.Artist;
+            document.getElementById("txtTitle").value  = jsonObj.Title;
+            document.getElementById("txtYear").value   = jsonObj.Year;
+            document.getElementById("txtPeak").value   = jsonObj.Peak;
+            if (qryType == 4)
+            {
+               curec = jsonObj.SongID;
+            }
          }
          else if (qryType == 2)
          {
@@ -76,7 +85,7 @@ function loadJSON(idx, qryType, direction) {
          }
       }
    }
-
+   // handle gaps in SongIDs, i.e.: if no 953, jump to 954, etc...
    function reqListener () {
       if (http_request.response == "null")
       {
@@ -113,8 +122,8 @@ function loadJSON(idx, qryType, direction) {
    if (qryType == 3)
    {
       szSongID = document.getElementById("txtSongID").value;
-      szArtist = encode(document.getElementById("txtArtist").value);
-      szTitle  = encode(document.getElementById("txtTitle").value);
+      szArtist = encode(document.getElementById("txtArtist").value); // encode ampersand
+      szTitle  = encode(document.getElementById("txtTitle").value); // encode ampersand
       szYear   = document.getElementById("txtYear").value;
       szPeak   = document.getElementById("txtPeak").value;
       http_request.open("POST", data_file, true);
@@ -122,17 +131,27 @@ function loadJSON(idx, qryType, direction) {
       params+=JSON.stringify({songid: szSongID, artist: szArtist, title: szTitle, year: szYear, peak: szPeak});
       http_request.send(params);
    }
+   // Search button
+   if (qryType == 4)
+   {
+      szArtist = encode(document.getElementById("txtArtist").value); // encode ampersand
+      szTitle  = encode(document.getElementById("txtTitle").value); // encode ampersand
+      http_request.open("POST", data_file, true);
+      http_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // req'd for POST with XHR
+      params+=JSON.stringify({artist: szArtist, title: szTitle});
+      http_request.send(params);
+   }
 
 }
 
- loadJSON(curec, 2); // set min/max variables
+loadJSON(curec, 2); // set min/max variables
  // Button functions
 function nextSong() {
    if (curec < maxSongID)
    {
       loadJSON(++curec, 1, 1);
     }
- }
+}
 function prevSong() {
    if (curec > minSongID)
    {
@@ -143,7 +162,7 @@ function goSong() {
    lastCurec = curec;
    curec = document.getElementById("txtSongID").value;
    loadJSON(curec, 1, 3);
- }
+}
 function firstSong() {
    curec = minSongID;
    loadJSON(curec, 1, 4);
@@ -154,4 +173,14 @@ function lastSong() {
 }
 function updateSong() {
    loadJSON(curec, 3, 0);
+}
+function clearSong() {
+   document.getElementById("txtSongID").value = "";
+   document.getElementById("txtArtist").value = "";
+   document.getElementById("txtTitle").value  = "";
+   document.getElementById("txtYear").value   = "";
+   document.getElementById("txtPeak").value   = "";
+}
+function searchSong() {
+   loadJSON(0, 4, 0);
 }

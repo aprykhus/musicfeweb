@@ -66,6 +66,38 @@ if ($qtype == 3)
     echo json_encode($row); */
 }
 
+if ($qtype == 4)
+{
+    # Search button
+    $tsql = "";
+    $jsonarr = json_decode($qupdate, true);
+    $artist = print_r($jsonarr['artist'], true);
+    $title = print_r($jsonarr['title'], true);
+    if($artist != "" && $title == "")
+    {
+        $basesql = "SELECT * FROM vw_ListSongs WHERE Artist LIKE '%";
+        $tsql    = $basesql.$artist."%'";
+    }
+    if($artist == "" && $title != "")
+    {
+        $basesql = "SELECT * FROM vw_ListSongs WHERE Title LIKE '%";
+        $tsql    = $basesql.$title."%'";
+    }
+    if($artist != "" && $title != "")
+    {
+        $basesql = "SELECT * FROM vw_ListSongs WHERE Artist LIKE '%";
+        $tsql    = $basesql.$artist."%' AND Title LIKE '%".$title."%'";
+    }
+    $stmt = sqlsrv_query( $conn, $tsql);
+    if( $stmt === false)
+    {
+        echo "Error in executing query.</br>";
+        die( print_r( sqlsrv_errors(), true));
+    }
+    $row = sqlsrv_fetch_array($stmt);
+    echo json_encode($row);
+}
+
 /* Free statement and connection resources. */
 sqlsrv_free_stmt( $stmt);
 sqlsrv_close( $conn);
