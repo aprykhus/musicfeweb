@@ -2,7 +2,6 @@
 var curec = 0;
 var minSongID = 0;
 var maxSongID = 0;
-var jsonNull = 0;
 var lastCurec = 0;
 
 // functions
