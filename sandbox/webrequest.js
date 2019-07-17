@@ -9,12 +9,7 @@ var lastCurec = 0;
 
 function encode(strVal)
 {
-/*
--------------------------------------------
-using a regular expression I search
-for the & and encode it with %26.
---------------------------------------------
-*/
+// using a regular expression search for the & and encode it with %26.
     if (strVal.indexOf('&') > -1)
     {
         var searchStr = "&";
@@ -24,17 +19,16 @@ for the & and encode it with %26.
     }else{
         var result = strVal;
     }
- 
     return result;
 }
 
 function loadJSON(idx, qryType, direction) {
-   var szSongID 
-   var szArtist 
-   var szTitle  
-   var szYear   
-   var szPeak   
-   var data_file = "http://localhost/musicfe/sandbox/song.php";
+   var szSongID;
+   var szArtist;
+   var szTitle;
+   var szYear;
+   var szPeak;
+   var data_file = "song.php";
    if (qryType == 1)
       var params = "id=" + idx + "&qtype=1&edit=";
    else if (qryType == 2)
@@ -49,9 +43,7 @@ function loadJSON(idx, qryType, direction) {
       // Internet Explorer Browsers
       try{
          http_request = new ActiveXObject("Msxml2.XMLHTTP");
-
       }catch (e) {
-
          try{
             http_request = new ActiveXObject("Microsoft.XMLHTTP");
          }catch (e) {
