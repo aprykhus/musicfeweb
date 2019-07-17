@@ -102,6 +102,7 @@ function loadJSON(idx, qryType, direction) {
       }
    }
 
+   // Next/Prev is 1, min/max is 2
    if (qryType == 1 || qryType == 2)
    {
       http_request.addEventListener("load", reqListener); // handling null SongIDs
@@ -109,6 +110,7 @@ function loadJSON(idx, qryType, direction) {
       http_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // req'd for POST with XHR
       http_request.send(params);
    }
+   // Update button is 3
    if (qryType == 3)
    {
       szSongID = document.getElementById("txtSongID").value;
@@ -117,10 +119,8 @@ function loadJSON(idx, qryType, direction) {
       szYear   = document.getElementById("txtYear").value;
       szPeak   = document.getElementById("txtPeak").value;
       http_request.open("POST", data_file, true);
-      // http_request.setRequestHeader("Content-Type", "application/json");
       http_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // req'd for POST with XHR
       params+=JSON.stringify({songid: szSongID, artist: szArtist, title: szTitle, year: szYear, peak: szPeak});
-      // var cleanparams = encodeURIComponent(params);
       http_request.send(params);
    }
 
