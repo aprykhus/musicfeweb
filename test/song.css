@@ -1,0 +1,28 @@
+button {
+    width: 80px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+button.btn1 {
+    height: 40px;
+}
+
+button.btn2 {
+    width: 60px;
+    height: 30px;
+}
+
+button.btn3 {
+    height: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+input {
+    height: 20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 10pt;
+}
+
+span {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
