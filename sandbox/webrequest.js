@@ -21,6 +21,12 @@ function encode(strVal)
     return result;
 }
 
+function chkSnglQut(field) {
+   // var squote = "'";
+   var escquote = "''";
+   return field.replace(/'/g, escquote);
+}
+
 function loadJSON(idx, qryType, direction) {
    var szSongID;
    var szArtist;
@@ -28,14 +34,17 @@ function loadJSON(idx, qryType, direction) {
    var szYear;
    var szPeak;
    var data_file = "song.php";
+   var newSongID;
    if (qryType == 1)
       var params = "id=" + idx + "&qtype=1&edit=";
    else if (qryType == 2)
       var params = "id=" + idx + "&qtype=2&edit=";
    else if (qryType == 3)
-      var params = "id=" + idx + "&qtype=3" + "&edit=";
+      var params = "id=" + idx + "&qtype=3&edit=";
    else if (qryType == 4)
-      var params = "id=" + idx + "&qtype=4" + "&edit=";
+      var params = "id=" + idx + "&qtype=4&edit=";
+   else if (qryType == 5)
+      var params = "id=" + idx + "&qtype=5&edit=";
    var http_request = new XMLHttpRequest();
    try{
       // Opera 8.0+, Firefox, Chrome, Safari
@@ -75,13 +84,26 @@ function loadJSON(idx, qryType, direction) {
             document.getElementById("txtPeak").value   = jsonObj.Peak;
             if (qryType == 4)
             {
-               curec = jsonObj.SongID;
+               curec = jsonObj.SongID; // set search result SongID to curec
             }
          }
          else if (qryType == 2)
          {
             minSongID = jsonObj.minSongID;
             maxSongID = jsonObj.maxSongID;
+         }
+         else if (qryType == 5)
+         {
+            if (http_request.responseText == -1)
+            {
+               alert("Song already exists by this artist");
+            }
+            else
+            {
+               document.getElementById("txtSongID").value = http_request.responseText; // populate new SongID
+               maxSongID = http_request.responseText; // update maxSongID;
+               curec = maxSongID; // update current record
+            }
          }
       }
    }
@@ -122,10 +144,14 @@ function loadJSON(idx, qryType, direction) {
    if (qryType == 3)
    {
       szSongID = document.getElementById("txtSongID").value;
-      szArtist = encode(document.getElementById("txtArtist").value); // encode ampersand
-      szTitle  = encode(document.getElementById("txtTitle").value); // encode ampersand
+      szArtist = encode(chkSnglQut(document.getElementById("txtArtist").value)); // encode ampersand and escape single quotes for SQL
+      szTitle  = encode(chkSnglQut(document.getElementById("txtTitle").value)); // encode ampersand and escape single quotes for SQL
       szYear   = document.getElementById("txtYear").value;
       szPeak   = document.getElementById("txtPeak").value;
+      if (szPeak == "")
+      {
+         szPeak = "NULL";
+      }
       http_request.open("POST", data_file, true);
       http_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // req'd for POST with XHR
       params+=JSON.stringify({songid: szSongID, artist: szArtist, title: szTitle, year: szYear, peak: szPeak});
@@ -134,14 +160,29 @@ function loadJSON(idx, qryType, direction) {
    // Search button
    if (qryType == 4)
    {
-      szArtist = encode(document.getElementById("txtArtist").value); // encode ampersand
-      szTitle  = encode(document.getElementById("txtTitle").value); // encode ampersand
+      szArtist = encode(chkSnglQut(document.getElementById("txtArtist").value)); // encode ampersand and escape single quotes for SQL
+      szTitle  = encode(chkSnglQut(document.getElementById("txtTitle").value)); // encode ampersand and escape single quotes for SQL
       http_request.open("POST", data_file, true);
       http_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // req'd for POST with XHR
       params+=JSON.stringify({artist: szArtist, title: szTitle});
       http_request.send(params);
    }
-
+   // Add button
+   if (qryType == 5)
+   {
+      szArtist = encode(chkSnglQut(document.getElementById("txtArtist").value)); // encode ampersand and escape single quotes for SQL
+      szTitle  = encode(chkSnglQut(document.getElementById("txtTitle").value)); // encode ampersand and escape single quotes for SQL
+      szYear   = document.getElementById("txtYear").value;
+      szPeak   = document.getElementById("txtPeak").value;
+      if (szPeak == "")
+      {
+         szPeak = "NULL";
+      }
+      http_request.open("POST", data_file, true);
+      http_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // req'd for POST with XHR
+      params+=JSON.stringify({artist: szArtist, title: szTitle, year: szYear, peak: szPeak});
+      http_request.send(params);
+   }
 }
 
 loadJSON(curec, 2); // set min/max variables
@@ -183,4 +224,7 @@ function clearSong() {
 }
 function searchSong() {
    loadJSON(0, 4, 0);
+}
+function addSong() {
+   loadJSON(curec, 5, 5); // add song
 }
