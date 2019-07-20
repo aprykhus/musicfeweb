@@ -21,8 +21,8 @@ function encode(strVal)
     return result;
 }
 
+// Escapte 
 function chkSnglQut(field) {
-   // var squote = "'";
    var escquote = "''";
    return field.replace(/'/g, escquote);
 }
@@ -112,7 +112,7 @@ function loadJSON(idx, qryType, direction) {
    function reqListener () {
       if (http_request.response == "null")
       {
-         if (direction == 1 || (direction == 6 && curec != maxSongID && curec != minSongID)) // next button is 1, Delete button is 6
+         if (direction == 1) // next button is 1
          {
             nextSong();
          }
@@ -130,19 +130,6 @@ function loadJSON(idx, qryType, direction) {
          {
             firstSong();
          }
-         if (direction == 6) // Delete button
-         {
-            if (curec == maxSongID)
-            {
-               prevSong();
-               loadJSON(curec, 2); // update maxSongID
-            }
-            if (curec == minSongID)
-            {
-               nextSong();
-               loadJSON(curec, 2); // update minSongID
-            }
-         }
       }
    }
 
@@ -153,6 +140,25 @@ function loadJSON(idx, qryType, direction) {
       http_request.open("POST", data_file, true);
       http_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // req'd for POST with XHR
       http_request.send(params);
+      /* If record deleted jump to next record except when deleting last ID or
+      first ID, in those cases update min/max IDs */
+      if (qryType == 6)
+      {
+         if (curec != maxSongID)
+         {
+            nextSong();
+         }
+         if (curec == maxSongID)
+         {
+            prevSong();
+            loadJSON(curec, 2); // update maxSongID
+         }
+         if (curec == minSongID)
+         {
+            nextSong();
+            loadJSON(curec, 2); // update minSongID
+         }
+      }
    }
    // Update button is 3
    if (qryType == 3)
