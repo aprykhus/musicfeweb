@@ -1,5 +1,5 @@
 // global variables
-var curec = 0;
+var curec = 0; // current record (SongID) on webpage. In other words, the cursor.
 var minSongID = 0;
 var maxSongID = 0;
 var lastCurec = 0;
@@ -112,7 +112,7 @@ function loadJSON(idx, qryType, direction) {
    function reqListener () {
       if (http_request.response == "null")
       {
-         if (direction == 1) // next button is 1
+         if (direction == 1 || (direction == 6 && curec != maxSongID && curec != minSongID)) // next button is 1, Delete button is 6
          {
             nextSong();
          }
@@ -129,6 +129,19 @@ function loadJSON(idx, qryType, direction) {
          if (direction == 4) // onload in body tag uses firstSong
          {
             firstSong();
+         }
+         if (direction == 6) // Delete button
+         {
+            if (curec == maxSongID)
+            {
+               prevSong();
+               loadJSON(curec, 2); // update maxSongID
+            }
+            if (curec == minSongID)
+            {
+               nextSong();
+               loadJSON(curec, 2); // update minSongID
+            }
          }
       }
    }
@@ -186,13 +199,13 @@ function loadJSON(idx, qryType, direction) {
    }
 }
 
-loadJSON(curec, 2); // set min/max variables
+loadJSON(curec, 2); // set min/max variables on page load
  // Button functions
 function nextSong() {
    if (curec < maxSongID)
    {
       loadJSON(++curec, 1, 1);
-    }
+   }
 }
 function prevSong() {
    if (curec > minSongID)

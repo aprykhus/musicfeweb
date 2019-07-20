@@ -117,7 +117,19 @@ if ($qtype == 5)
     sqlsrv_next_result($stmt); // move forward to third result
     $row = sqlsrv_fetch_array($stmt);
     echo $row[0];
-    return;
+}
+
+if ($qtype == 6)
+{
+    # Delete button
+    // $jsonarr = json_decode($qupdate, true);
+    $tsql = "DELETE FROM Songs WHERE SongID = ".$id;
+    $stmt = sqlsrv_query( $conn, $tsql);
+    if( $stmt === false)
+    {
+        echo "Error in executing query.</br>";
+        die( print_r( sqlsrv_errors(), true));
+    }
 }
 
 /* Free statement and connection resources. */
