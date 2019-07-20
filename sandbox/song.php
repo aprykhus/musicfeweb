@@ -100,36 +100,24 @@ if ($qtype == 4)
 
 if ($qtype == 5)
 {
-    # Add button server-side code
-    $retcode = 0;
+    # Add button
     $jsonarr = json_decode($qupdate, true);
     $artist = print_r($jsonarr['artist'], true);
     $title = print_r($jsonarr['title'], true);
     $year = print_r($jsonarr['year'], true);
     $peak = print_r($jsonarr['peak'], true);
     $tsql = "EXEC usp_AddSongWeb '".$artist."', '".$title."', '".$year."', ".$peak.";";
-    // $tsql = "SELECT 'hello'; SELECT 'world'; SELECT 'goodbye'; SELECT 999;";
-    // $stmt = sqlsrv_prepare($conn, $tsql, array(&$retcode));
     $stmt = sqlsrv_query( $conn, $tsql);
     if( $stmt === false)
     {
         echo "Error in executing query.</br>";
         die( print_r( sqlsrv_errors(), true));
     }
-    // sqlsrv_execute($stmt);
-
     sqlsrv_next_result($stmt);
-    sqlsrv_next_result($stmt);
-    // sqlsrv_next_result($stmt);
+    sqlsrv_next_result($stmt); // move forward to third result
     $row = sqlsrv_fetch_array($stmt);
-    $retcode = $row[0];
-/*     if ($retcode == -1)
-    { */
-    echo $retcode;
+    echo $row[0];
     return;
-    // }
-/*         $row = sqlsrv_fetch_array($stmt);    
-    echo json_encode($row); */
 }
 
 /* Free statement and connection resources. */
