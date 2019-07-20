@@ -98,6 +98,40 @@ if ($qtype == 4)
     echo json_encode($row);
 }
 
+if ($qtype == 5)
+{
+    # Add button
+    $jsonarr = json_decode($qupdate, true);
+    $artist = print_r($jsonarr['artist'], true);
+    $title = print_r($jsonarr['title'], true);
+    $year = print_r($jsonarr['year'], true);
+    $peak = print_r($jsonarr['peak'], true);
+    $tsql = "EXEC usp_AddSongWeb '".$artist."', '".$title."', '".$year."', ".$peak.";";
+    $stmt = sqlsrv_query( $conn, $tsql);
+    if( $stmt === false)
+    {
+        echo "Error in executing query.</br>";
+        die( print_r( sqlsrv_errors(), true));
+    }
+    sqlsrv_next_result($stmt);
+    sqlsrv_next_result($stmt); // move forward to third result
+    $row = sqlsrv_fetch_array($stmt);
+    echo $row[0];
+}
+
+if ($qtype == 6)
+{
+    # Delete button
+    // $jsonarr = json_decode($qupdate, true);
+    $tsql = "DELETE FROM Songs WHERE SongID = ".$id;
+    $stmt = sqlsrv_query( $conn, $tsql);
+    if( $stmt === false)
+    {
+        echo "Error in executing query.</br>";
+        die( print_r( sqlsrv_errors(), true));
+    }
+}
+
 /* Free statement and connection resources. */
 sqlsrv_free_stmt( $stmt);
 sqlsrv_close( $conn);

@@ -21,7 +21,7 @@ function encode(strVal)
     return result;
 }
 
-// Escapte 
+// function to escape single quotes
 function chkSnglQut(field) {
    var escquote = "''";
    return field.replace(/'/g, escquote);
