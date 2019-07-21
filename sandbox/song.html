@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <head>
    <link rel="stylesheet" type="text/css" href="song.css">
+   <!-- <link rel="stylesheet" type="text/css" href="freezetest1.css"> -->
+   <!-- <link rel="stylesheet" type="text/css" href="colwidth.css"> -->
+   <!-- <link rel="stylesheet" type="text/css" href="tbl_freeze_top_row.css"> -->
+   <meta charset="UTF-8">
 </head>
-<body onload="firstSong()">
+<body onload="firstSong(); populateGrid()">
 
 <form>
    <div style="float:left; padding-top: 40px">
@@ -31,9 +35,12 @@
    </div>
 </form>
 
-<iframe>
-   
-</iframe>
+<div style="clear: left; height: 20px">
+</div>
+
+<!-- Table made scrollable and 50% width -->
+<div id="tblDataGrid" style="overflow-y: scroll; height:407px; width:40%; border: 1px solid black">
+</div>
 
 <script type="text/javascript" src="song.js"></script>
 

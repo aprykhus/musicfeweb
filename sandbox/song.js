@@ -46,6 +46,8 @@ function loadJSON(idx, qryType, direction) {
       var params = "id=" + idx + "&qtype=5&edit=";
    else if (qryType == 6)
       var params = "id=" + idx + "&qtype=6&edit=";
+   else if (qryType == 7)
+      var params = "id=" + idx + "&qtype=7&edit=";
    var http_request = new XMLHttpRequest();
    try{
       // Opera 8.0+, Firefox, Chrome, Safari
@@ -106,6 +108,10 @@ function loadJSON(idx, qryType, direction) {
                curec = maxSongID; // update current record
             }
          }
+         else if (qryType == 7)
+         {
+            document.getElementById("tblDataGrid").innerHTML = http_request.responseText;
+         }
       }
    }
    // handle gaps in SongIDs, i.e.: if no 953, jump to 954, etc...
@@ -134,7 +140,7 @@ function loadJSON(idx, qryType, direction) {
    }
 
    // Next/Prev is 1, min/max is 2, Delete button is 6
-   if (qryType == 1 || qryType == 2 || qryType == 6)
+   if (qryType == 1 || qryType == 2 || qryType == 6 || qryType == 7)
    {
       http_request.addEventListener("load", reqListener); // handling null SongIDs
       http_request.open("POST", data_file, true);
@@ -251,4 +257,7 @@ function addSong() {
 
 function deleteSong() {
    loadJSON(curec, 6, 6); // delete song
+}
+function populateGrid() {
+   loadJSON(curec, 7, 7);
 }

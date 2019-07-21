@@ -27,7 +27,6 @@ if ($qtype == 1)
 
     /* Retreive and display the results of the query. */
     $row = sqlsrv_fetch_array($stmt);
-    $space = " ";
     echo json_encode($row);
 }
 
@@ -130,6 +129,40 @@ if ($qtype == 6)
         echo "Error in executing query.</br>";
         die( print_r( sqlsrv_errors(), true));
     }
+}
+
+if ($qtype == 7)
+{
+    # populate table
+    $tsql = "SELECT * FROM vw_ListSongs ORDER BY SongID";
+    $stmt = sqlsrv_query($conn, $tsql);
+    if( $stmt === false)
+    {
+        echo "Error in executing query.</br>";
+        die( print_r( sqlsrv_errors(), true));
+    }
+
+    /* Retreive and display the results of the query. */
+/*     $row = sqlsrv_fetch_array($stmt);
+    echo json_encode($row); */
+    echo "<table>";
+    echo "<thead>
+    <tr>
+        <th>SongID</th>
+        <th>Artist</th>
+        <th>Title</th>
+        <th>Year</th>
+        <th>Peak</th>
+    </tr>
+    </thead>
+    <tbody>
+ ";
+ 
+    while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC)){
+        echo "<tr><td>".$row['SongID']."</td><td>".$row['Artist']."</td><td>".$row['Title']."</td><td>".$row['Year']."</td><td>".$row['Peak']."</td></tr>"; 
+    }
+    echo "</tbody>";
+    echo "</table>";
 }
 
 /* Free statement and connection resources. */
