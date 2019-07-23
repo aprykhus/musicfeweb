@@ -63,7 +63,7 @@ th:nth-child(3), td:nth-child(3) { width: 406.43px; }
 th:nth-child(4), td:nth-child(4) { width: 27.12px; }
 th:last-child, td:last-child { width: 25.23px; }
 
-tr:nth-child(6) {color: red;}
+/* tr:nth-child(6) {color: red;} */
 
 /* thead th:nth-child(1) {
     position: relative;
