@@ -6,8 +6,6 @@ var lastCurec = 0;
 
 // functions
 
-
-
 function encode(strVal)
 {
 // using a regular expression search for the & and encode it with %26.
@@ -91,12 +89,24 @@ function loadJSON(idx, qryType, direction) {
             {
                curec = jsonObj.SongID; // set search result SongID to curec
                document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red"; // highlight row
+               if (curec == minSongID)
+               {
+                  document.getElementsByTagName("tr")[findGridIndex(curec)].scrollIntoView(false);
+               }
+               else
+               {
+                  document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
+               }
             }
          }
          else if (qryType == 2)
          {
             minSongID = jsonObj.minSongID;
             maxSongID = jsonObj.maxSongID;
+         }
+         else if (qryType == 3)
+         {
+            populateGrid(); // update grid on update record
          }
          else if (qryType == 5)
          {
@@ -109,6 +119,8 @@ function loadJSON(idx, qryType, direction) {
                document.getElementById("txtSongID").value = http_request.responseText; // populate new SongID
                maxSongID = http_request.responseText; // update maxSongID;
                curec = maxSongID; // update current record
+               populateGrid();
+               document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
             }
          }
          else if (qryType == 7)
@@ -139,6 +151,15 @@ function loadJSON(idx, qryType, direction) {
          {
             initSong();
          }
+      }
+      if (direction == 5)
+      {
+         setTimeout(scrollGrid, 1000);
+      }
+      if (direction == 6)
+      {
+         populateGrid(); // update grid after song is deleted
+         document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
       }
       if (direction == 7)
       {
@@ -211,6 +232,7 @@ function loadJSON(idx, qryType, direction) {
       {
          szPeak = "NULL";
       }
+      http_request.addEventListener("load", reqListener); // scroll to new song
       http_request.open("POST", data_file, true);
       http_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // req'd for POST with XHR
       params+=JSON.stringify({artist: szArtist, title: szTitle, year: szYear, peak: szPeak});
@@ -227,7 +249,7 @@ function getGridSongID(idx) {
 /* Search for the SongID in the grid and return the grid index */
 function findGridIndex(searchStr) {
    for (var i = 1; i < document.getElementsByTagName('tr').length; i++) {
-      if (document.getElementsByTagName('tr')[i].getElementsByTagName('td')[0].innerHTML.search("^" + searchStr + "\\b") !== -1) {
+      if (document.getElementsByTagName('tr')[i].getElementsByTagName('td')[0].innerHTML.search("^" + searchStr + "$") !== -1) {
          return i;
       }
    }
@@ -240,26 +262,25 @@ function nextSong() {
    if (curec < maxSongID)
    {
       loadJSON(++curec, 1, 1);
-      // Handle SongID gaps, search for SongID in grid, highlight that index
-/*       for (var i = 1; i < document.getElementsByTagName('tr').length; i++) { // document.getElementsByTagName('tr').length
-         if (document.getElementsByTagName('tr')[i].getElementsByTagName('td')[0].innerHTML.search("^" + curec + "$") !== -1) { */
       document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
       document.getElementsByTagName("tr")[findGridIndex(curec)-1].removeAttribute("style");
-/*          }
-      } */
+      document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
    }
 }
 function prevSong() {
    if (curec > minSongID)
    {
       loadJSON(--curec, 1, 2);
-      // Handle SongID gaps, search for SongID in grid, highlight that index
-/*       for (var i = 1; i < document.getElementsByTagName('tr').length; i++) { // document.getElementsByTagName('tr').length
-      if (document.getElementsByTagName('tr')[i].getElementsByTagName('td')[0].innerHTML.search("^" + curec + "$") !== -1) { */
-            document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
-            document.getElementsByTagName("tr")[findGridIndex(curec)+1].removeAttribute("style");
-/*          }
-      } */
+      document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
+      document.getElementsByTagName("tr")[findGridIndex(curec)+1].removeAttribute("style");
+      if (curec == minSongID)
+      {
+         document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(false);
+      }
+      else
+      {
+         document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
+      }
    }
 }
 function goSong() {
@@ -267,12 +288,15 @@ function goSong() {
    lastCurec = curec; // store last record visited to revert if bad SongID
    curec = document.getElementById("txtSongID").value;
    loadJSON(curec, 1, 3);
-         // Handle SongID gaps, search for SongID in grid, highlight that index
-/*    for (var i = 1; i < document.getElementsByTagName('tr').length; i++) { // document.getElementsByTagName('tr').length
-   if (document.getElementsByTagName('tr')[i].getElementsByTagName('td')[0].innerHTML.search("^" + curec + "$") !== -1) { */
    document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
-/*       }
-   } */
+   if (curec == minSongID)
+   {
+      document.getElementsByTagName("tr")[findGridIndex(curec)].scrollIntoView(false);
+   }
+   else
+   {
+      document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
+   }
 }
 
 function initSong() {
@@ -284,12 +308,14 @@ function firstSong() {
    curec = minSongID;
    loadJSON(curec, 1, 4);
    document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
+   document.getElementsByTagName("tr")[findGridIndex(curec)].scrollIntoView(false);
 }
 function lastSong() {
    document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
    curec = maxSongID;
    loadJSON(curec, 1, 5);
    document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
+   document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
 }
 function updateSong() {
    loadJSON(curec, 3, 0);
@@ -306,12 +332,15 @@ function searchSong() {
    loadJSON(0, 4, 0);
 }
 function addSong() {
+   document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
    loadJSON(curec, 5, 5); // add song
 }
-
 function deleteSong() {
    loadJSON(curec, 6, 6); // delete song
 }
 function populateGrid() {
    loadJSON(curec, 7, 7);
+}
+function scrollGrid() {
+   document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
 }
