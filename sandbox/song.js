@@ -147,10 +147,12 @@ function loadJSON(idx, qryType, direction) {
             curec = lastCurec;
             document.getElementById("txtSongID").value = curec;
          }
-         if (direction == 4) // onload in body tag uses firstSong
-         {
-            initSong();
-         }
+      }
+      if (direction == 4) // onload in body tag uses firstSong
+      {
+         // initSong();
+         setTimeout(scrollGrid, 2000);
+         document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
       }
       if (direction == 5)
       {
@@ -300,7 +302,11 @@ function goSong() {
 }
 
 function initSong() {
-   curec = minSongID;
+   curec = Number(getCookie("curec")); // get record from last browser session
+   if (curec == 0)
+   {
+      curec = minSongID;
+   }
    loadJSON(curec, 1, 4);
 }
 function firstSong() {
@@ -343,4 +349,24 @@ function populateGrid() {
 }
 function scrollGrid() {
    document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
+}
+
+// Cache the current record (curec) in cookie
+function getCookie(cname) {
+   var name = cname + "=";
+   var decodedCookie = decodeURIComponent(document.cookie);
+   var ca = decodedCookie.split(';');
+   for(var i = 0; i <ca.length; i++) {
+     var c = ca[i];
+     while (c.charAt(0) == ' ') {
+       c = c.substring(1);
+     }
+     if (c.indexOf(name) == 0) {
+       return c.substring(name.length, c.length);
+     }
+   }
+   return "";
+}
+function setCurecCookie() {
+   document.cookie = "curec=" + curec;
 }
