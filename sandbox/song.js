@@ -147,11 +147,15 @@ function loadJSON(idx, qryType, direction) {
             curec = lastCurec;
             document.getElementById("txtSongID").value = curec;
          }
+         if (direction == 4) // onload in body tag uses firstSong
+         {
+            initSong();
+         }
       }
       if (direction == 4) // onload in body tag uses firstSong
       {
          // initSong();
-         setTimeout(scrollGrid, 2000);
+         setTimeout(scrollGrid, 100);
          document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
       }
       if (direction == 5)
@@ -303,7 +307,7 @@ function goSong() {
 
 function initSong() {
    curec = Number(getCookie("curec")); // get record from last browser session
-   if (curec == 0)
+   if (curec == 0 || curec == null)
    {
       curec = minSongID;
    }
@@ -349,6 +353,7 @@ function populateGrid() {
 }
 function scrollGrid() {
    document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
+   // document.getElementsByTagName("tr")[findGridIndex(curec)-1]
 }
 
 // Cache the current record (curec) in cookie
@@ -369,4 +374,15 @@ function getCookie(cname) {
 }
 function setCurecCookie() {
    document.cookie = "curec=" + curec;
+}
+
+// Select record by clicking on grid row
+document.getElementById("tblDataGrid").onclick = () => { getGridSpot(event) };
+
+function getGridSpot(event) {
+   document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
+   var ocSongID = event.target.parentNode.firstElementChild.innerHTML;
+   curec = ocSongID;
+   loadJSON(curec, 1, 3);
+   document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
 }
