@@ -1,6 +1,10 @@
 # MusicFEweb
 ## Getting Started
 Clone repository to your local machine
+1. Open command prompt as Administrator
+2. Choose a directory to clone to. For example D:\Documents.
+3. git clone https://github.com/aprykhus/musicfeweb.git
+4. You'll now have a folder D:\Documents\musicfeweb
 
 ### Prerequisites
 * Windows 10
@@ -27,9 +31,8 @@ Database role membership to Music database: db_datareader
 
 Objects to grant NT AUTHORITY\IUSR execute permission to:
 
-dbo.usp_AddSongWeb
-
-dbo.usp_UpdateSongList
+* dbo.usp_AddSongWeb
+* dbo.usp_UpdateSongList
 
 
 ## Running the tests
@@ -37,8 +40,8 @@ Navigate to http://localhost/musicfe/sandbox/song.html
 Verify the form and table populate the data from SQL.
 If they don't verify IIS and SQL Server are running.
 From Command Prompt (Administrator) run:
-sc query w3svc
-sc query mssql$sqlexpress
+sc query w3svc 
+sc query mssql$sqlexpress 
 
 If STATE is not RUNNING for these services, start them:
 
