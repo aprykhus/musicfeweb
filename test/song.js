@@ -46,6 +46,8 @@ function loadJSON(idx, qryType, direction) {
       var params = "id=" + idx + "&qtype=5&edit=";
    else if (qryType == 6)
       var params = "id=" + idx + "&qtype=6&edit=";
+   else if (qryType == 7)
+      var params = "id=" + idx + "&qtype=7&edit=";
    var http_request = new XMLHttpRequest();
    try{
       // Opera 8.0+, Firefox, Chrome, Safari
@@ -86,12 +88,25 @@ function loadJSON(idx, qryType, direction) {
             if (qryType == 4)
             {
                curec = jsonObj.SongID; // set search result SongID to curec
+               document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red"; // highlight row
+               if (curec == minSongID)
+               {
+                  document.getElementsByTagName("tr")[findGridIndex(curec)].scrollIntoView(false);
+               }
+               else
+               {
+                  document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
+               }
             }
          }
          else if (qryType == 2)
          {
             minSongID = jsonObj.minSongID;
             maxSongID = jsonObj.maxSongID;
+         }
+         else if (qryType == 3)
+         {
+            populateGrid(); // update grid on update record
          }
          else if (qryType == 5)
          {
@@ -104,7 +119,13 @@ function loadJSON(idx, qryType, direction) {
                document.getElementById("txtSongID").value = http_request.responseText; // populate new SongID
                maxSongID = http_request.responseText; // update maxSongID;
                curec = maxSongID; // update current record
+               populateGrid();
+               document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
             }
+         }
+         else if (qryType == 7)
+         {
+            document.getElementById("tblDataGrid").innerHTML = http_request.responseText;
          }
       }
    }
@@ -128,13 +149,32 @@ function loadJSON(idx, qryType, direction) {
          }
          if (direction == 4) // onload in body tag uses firstSong
          {
-            firstSong();
+            initSong();
          }
+      }
+      if (direction == 4) // onload in body tag uses firstSong
+      {
+         // initSong();
+         setTimeout(scrollGrid, 100);
+         document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
+      }
+      if (direction == 5)
+      {
+         setTimeout(scrollGrid, 1000);
+      }
+      if (direction == 6)
+      {
+         populateGrid(); // update grid after song is deleted
+         document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
+      }
+      if (direction == 7)
+      {
+         document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
       }
    }
 
-   // Next/Prev is 1, min/max is 2, Delete button is 6
-   if (qryType == 1 || qryType == 2 || qryType == 6)
+   // Next/Prev is 1, min/max is 2, Delete button is 6, Populate Grid is 7
+   if (qryType == 1 || qryType == 2 || qryType == 6 || qryType == 7)
    {
       http_request.addEventListener("load", reqListener); // handling null SongIDs
       http_request.open("POST", data_file, true);
@@ -198,6 +238,7 @@ function loadJSON(idx, qryType, direction) {
       {
          szPeak = "NULL";
       }
+      http_request.addEventListener("load", reqListener); // scroll to new song
       http_request.open("POST", data_file, true);
       http_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // req'd for POST with XHR
       params+=JSON.stringify({artist: szArtist, title: szTitle, year: szYear, peak: szPeak});
@@ -205,32 +246,86 @@ function loadJSON(idx, qryType, direction) {
    }
 }
 
+/* Fetch the ID on the grid to reconcile discrepancies between curec and
+SongIDs in the db. For example: 312, 313, 314, 316, 317 */
+function getGridSongID(idx) {
+   return document.getElementsByTagName("tr")[idx].getElementsByTagName("td")[0].innerHTML;
+}
+
+/* Search for the SongID in the grid and return the grid index */
+function findGridIndex(searchStr) {
+   for (var i = 1; i < document.getElementsByTagName('tr').length; i++) {
+      if (document.getElementsByTagName('tr')[i].getElementsByTagName('td')[0].innerHTML.search("^" + searchStr + "$") !== -1) {
+         return i;
+      }
+   }
+}
+
 loadJSON(curec, 2); // set min/max variables on page load
- // Button functions
+
+// Button functions
 function nextSong() {
    if (curec < maxSongID)
    {
       loadJSON(++curec, 1, 1);
+      document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
+      document.getElementsByTagName("tr")[findGridIndex(curec)-1].removeAttribute("style");
+      document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
    }
 }
 function prevSong() {
    if (curec > minSongID)
    {
       loadJSON(--curec, 1, 2);
+      document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
+      document.getElementsByTagName("tr")[findGridIndex(curec)+1].removeAttribute("style");
+      if (curec == minSongID)
+      {
+         document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(false);
+      }
+      else
+      {
+         document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
+      }
    }
 }
 function goSong() {
-   lastCurec = curec;
+   document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style"); // remove highlighting from last row
+   lastCurec = curec; // store last record visited to revert if bad SongID
    curec = document.getElementById("txtSongID").value;
    loadJSON(curec, 1, 3);
+   document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
+   if (curec == minSongID)
+   {
+      document.getElementsByTagName("tr")[findGridIndex(curec)].scrollIntoView(false);
+   }
+   else
+   {
+      document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
+   }
 }
-function firstSong() {
-   curec = minSongID;
+
+function initSong() {
+   curec = Number(getCookie("curec")); // get record from last browser session
+   if (curec == 0 || curec == null)
+   {
+      curec = minSongID;
+   }
    loadJSON(curec, 1, 4);
 }
+function firstSong() {
+   document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
+   curec = minSongID;
+   loadJSON(curec, 1, 4);
+   document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
+   document.getElementsByTagName("tr")[findGridIndex(curec)].scrollIntoView(false);
+}
 function lastSong() {
+   document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
    curec = maxSongID;
    loadJSON(curec, 1, 5);
+   document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
+   document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
 }
 function updateSong() {
    loadJSON(curec, 3, 0);
@@ -243,12 +338,51 @@ function clearSong() {
    document.getElementById("txtPeak").value   = "";
 }
 function searchSong() {
+   document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
    loadJSON(0, 4, 0);
 }
 function addSong() {
+   document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
    loadJSON(curec, 5, 5); // add song
 }
-
 function deleteSong() {
    loadJSON(curec, 6, 6); // delete song
+}
+function populateGrid() {
+   loadJSON(curec, 7, 7);
+}
+function scrollGrid() {
+   document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
+   // document.getElementsByTagName("tr")[findGridIndex(curec)-1]
+}
+
+// Cache the current record (curec) in cookie
+function getCookie(cname) {
+   var name = cname + "=";
+   var decodedCookie = decodeURIComponent(document.cookie);
+   var ca = decodedCookie.split(';');
+   for(var i = 0; i <ca.length; i++) {
+     var c = ca[i];
+     while (c.charAt(0) == ' ') {
+       c = c.substring(1);
+     }
+     if (c.indexOf(name) == 0) {
+       return c.substring(name.length, c.length);
+     }
+   }
+   return "";
+}
+function setCurecCookie() {
+   document.cookie = "curec=" + curec;
+}
+
+// Select record by clicking on grid row
+document.getElementById("tblDataGrid").onclick = () => { getGridSpot(event) };
+
+function getGridSpot(event) {
+   document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
+   var ocSongID = event.target.parentNode.firstElementChild.innerHTML;
+   curec = ocSongID;
+   loadJSON(curec, 1, 3);
+   document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
 }

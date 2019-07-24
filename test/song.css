@@ -26,3 +26,49 @@ input {
 span {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
+/* Table formatting */
+table {
+    position: relative;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    font: 8pt verdana;
+}
+
+thead {
+    z-index: 1;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+    display: block;
+    overflow: visible;
+    background: #ddd;
+    /* opacity: 1; */
+}
+tbody {
+    position: relative;
+    display: block;
+}
+
+
+/* Table column widths */
+th:first-child, td:first-child { width: 40px; }
+th:nth-child(2), td:nth-child(2) { width: 186.71px; }
+th:nth-child(3), td:nth-child(3) { width: 406.43px; }
+th:nth-child(4), td:nth-child(4) { width: 27.12px; }
+th:last-child, td:last-child { width: 25.23px; }
+
+/* tr:nth-child(6) {color: red;} */
+
+/* thead th:nth-child(1) {
+    position: relative;
+    display: block;
+} */
+/* tbody {
+    display: block;
+} */
