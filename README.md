@@ -3,10 +3,10 @@
 Clone repository to your local machine
 
 ### Prerequisites
-*Windows 10
-*SQL Server Express 2016 with Windows Authentication
-*IIS
-*PHP for IIS https://php.iis.net/
+* Windows 10
+* SQL Server Express 2016 with Windows Authentication
+* IIS
+* PHP for IIS https://php.iis.net/
 
 ### Installing
 Create directory called musicfe under IIS directory, by default it's %SystemDrive%\inetpub\wwwroot (e.g. C:\inetpub\wwwroot).
