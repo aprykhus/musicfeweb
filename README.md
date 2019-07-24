@@ -3,23 +3,32 @@
 Clone repository to your local machine
 
 ### Prerequisites
-Windows 10
-SQL Server Express 2016 with Windows Authentication
-IIS
-PHP for IIS https://php.iis.net/
+*Windows 10
+*SQL Server Express 2016 with Windows Authentication
+*IIS
+*PHP for IIS https://php.iis.net/
 
 ### Installing
-Create directory called musicfe under IIS directory, by default it's %SystemDrive%\inetpub\wwwroot (e.g. C:\inetpub\wwwroot)
+Create directory called musicfe under IIS directory, by default it's %SystemDrive%\inetpub\wwwroot (e.g. C:\inetpub\wwwroot).
+
 Copy sandbox directory to inetpub\wwwroot\musicfe directory
-Restore music.bak to SQL Server. This can be done using SQL Server Management Studio (SSMS)
+
+Restore music.bak to SQL Server. This can be done using SQL Server Management Studio (SSMS).
+
 The database needs to be called Music for the web application to work.
+
 IUSR account needs access to the Music database. You'll need to add NT AUTHORITY\IUSR as an account on SQL Server. This can be done in SSMS by right-clicking the Security/Logins node and chosing New Login...
+
 You can either grant IUSR db_owner to the entire Music database. If you choose to grant by object.
+
 
 Database role membership to Music database: db_datareader
 
+
 Objects to grant NT AUTHORITY\IUSR execute permission to:
+
 dbo.usp_AddSongWeb
+
 dbo.usp_UpdateSongList
 
 
@@ -34,6 +43,7 @@ sc query mssql$sqlexpress
 If STATE is not RUNNING for these services, start them:
 
 sc start w3svc
+
 sc start mssql$sqlexpress
 
 NOTE: You can also use the 'net use' command to start services.
