@@ -2,7 +2,7 @@
 ## Getting Started
 Clone repository to your local machine
 
-### Prerquisites
+### Prerequisites
 Windows 10
 SQL Server Express 2016 with Windows Authentication
 IIS
