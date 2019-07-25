@@ -25,6 +25,7 @@ Clone repository to your local machine
     * On the left click the **Options** page, check the box **Overwrite the existing database (WITH REPLACE)** and click OK
         * You should receive a message saying "Database 'Music' restored successfully".
     * Alternatively you could run this SQL script:
+
             CREATE DATABASE Music;
             GO
 
