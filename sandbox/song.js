@@ -305,6 +305,10 @@ function initSong() {
    {
       curec = minSongID;
    }
+   if (curec == 0 || curec == null || curec == NaN)
+   {
+      curec = 1;
+   }
    loadJSON(curec, 1, 4);
 }
 function firstSong() {
