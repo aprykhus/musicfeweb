@@ -24,13 +24,21 @@ Clone repository to your local machine
     * From the Database drop-down select Music
     * On the left click the **Options** page, check the box **Overwrite the existing database (WITH REPLACE)** and click OK
         * You should receive a message saying "Database 'Music' restored successfully".
+    * Alternatively you could run this SQL script:
+            CREATE DATABASE Music;
+            GO
+
+            RESTORE DATABASE Music
+            FROM DISK = 'C:\test\musicfeweb\Music.bak'
+            WITH REPLACE, RECOVERY;
+
 * Run the script C:\test\musicfeweb\SQLPermissions.sql.
     * This adds the IIS anonymous authentication account: NT AUTHORITY\IUSR as a Login in SQL Server and grants IUSR permissions to objects in the Music database. This is required for PHP to run SQL to pull data into the webpage.
 
 ## Running the tests
 * Navigate to http://localhost/musicfe/sandbox/song.html
 * Verify the form and table populate the data from SQL.
-* If they don't verify IIS and SQL Server are running.
+* If they don't verify IIS and SQL Server services are running:
     * From Command Prompt (Administrator) run:
         * sc query w3svc 
         * sc query mssql$sqlexpress 
