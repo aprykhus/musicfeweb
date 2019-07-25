@@ -246,12 +246,6 @@ function loadJSON(idx, qryType, direction) {
    }
 }
 
-/* Fetch the ID on the grid to reconcile discrepancies between curec and
-SongIDs in the db. For example: 312, 313, 314, 316, 317 */
-function getGridSongID(idx) {
-   return document.getElementsByTagName("tr")[idx].getElementsByTagName("td")[0].innerHTML;
-}
-
 /* Search for the SongID in the grid and return the grid index */
 function findGridIndex(searchStr) {
    for (var i = 1; i < document.getElementsByTagName('tr').length; i++) {
@@ -353,7 +347,6 @@ function populateGrid() {
 }
 function scrollGrid() {
    document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
-   // document.getElementsByTagName("tr")[findGridIndex(curec)-1]
 }
 
 // Cache the current record (curec) in cookie

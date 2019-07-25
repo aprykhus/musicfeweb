@@ -61,8 +61,6 @@ if ($qtype == 3)
         echo "Error in executing query.</br>";
         die( print_r( sqlsrv_errors(), true));
     }
-/*         $row = sqlsrv_fetch_array($stmt);
-    echo json_encode($row); */
 }
 
 if ($qtype == 4)
@@ -121,7 +119,6 @@ if ($qtype == 5)
 if ($qtype == 6)
 {
     # Delete button
-    // $jsonarr = json_decode($qupdate, true);
     $tsql = "DELETE FROM Songs WHERE SongID = ".$id;
     $stmt = sqlsrv_query( $conn, $tsql);
     if( $stmt === false)
@@ -141,10 +138,6 @@ if ($qtype == 7)
         echo "Error in executing query.</br>";
         die( print_r( sqlsrv_errors(), true));
     }
-
-    /* Retreive and display the results of the query. */
-/*     $row = sqlsrv_fetch_array($stmt);
-    echo json_encode($row); */
     echo "<table>";
     echo "<thead>
     <tr>
