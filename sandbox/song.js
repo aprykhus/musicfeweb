@@ -374,7 +374,7 @@ function setCurecCookie() {
 }
 
 // Select record by clicking on grid row
-document.getElementById("tblDataGrid").onclick = () => { getGridSpot(event) };
+document.getElementById("tblDataGrid").onclick = function () { getGridSpot(event) };
 
 function getGridSpot(event) {
    document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
