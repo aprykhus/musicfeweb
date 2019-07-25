@@ -128,10 +128,36 @@ if ($qtype == 6)
     }
 }
 
-if ($qtype == 7)
+if ($qtype == 7 || $qtype == 8)
 {
     # populate table
-    $tsql = "SELECT * FROM vw_ListSongs ORDER BY SongID";
+    if ($qtype == 7)
+    {
+        $tsql = "SELECT * FROM vw_ListSongs ORDER BY SongID";
+    }
+    if ($qtype == 8)
+    {
+        $tsql = "";
+        $jsonarr = json_decode($qupdate, true);
+        $artist = print_r($jsonarr['artist'], true);
+        $title = print_r($jsonarr['title'], true);
+        if($artist != "" && $title == "")
+        {
+            $basesql = "SELECT * FROM vw_ListSongs WHERE Artist LIKE '%";
+            $tsql    = $basesql.$artist."%'";
+        }
+        if($artist == "" && $title != "")
+        {
+            $basesql = "SELECT * FROM vw_ListSongs WHERE Title LIKE '%";
+            $tsql    = $basesql.$title."%'";
+        }
+        if($artist != "" && $title != "")
+        {
+            $basesql = "SELECT * FROM vw_ListSongs WHERE Artist LIKE '%";
+            $tsql    = $basesql.$artist."%' AND Title LIKE '%".$title."%'";
+        }
+    }
+
     $stmt = sqlsrv_query($conn, $tsql);
     if( $stmt === false)
     {
