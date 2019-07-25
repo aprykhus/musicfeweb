@@ -2,9 +2,11 @@
 ## Getting Started
 Clone repository to your local machine
 1. Open command prompt as Administrator
-2. Choose a directory to clone to. For example D:\Documents.
-3. git clone https://github.com/aprykhus/musicfeweb.git
-4. You'll now have a folder D:\Documents\musicfeweb
+2. Choose a directory to clone to. For example C:\test.
+3. Type the following:
+    * git clone https://github.com/aprykhus/musicfeweb.git
+    * press Enter
+4. This will create the folder C:\test\musicfeweb
 
 ### Prerequisites
 * Windows 10
@@ -14,15 +16,16 @@ Clone repository to your local machine
 
 ### Installing
 * Create a directory called **musicfe** under the IIS directory, by default it's %SystemDrive%\inetpub\wwwroot (e.g. C:\inetpub\wwwroot).
-* Copy **musicfeweb\sandbox** directory to inetpub\wwwroot\musicfe directory
-* Restore **music.bak** to SQL Server. This can be done using SQL Server Management Studio (SSMS).
-* The database needs to be named **Music** for the web application to work.
-* IUSR account needs access to the Music database. You'll need to add NT AUTHORITY\IUSR as an account on SQL Server. This can be done in SSMS by right-clicking the Security/Logins node and chosing New Login...
-* You can either grant IUSR db_owner to the entire Music database. If you choose to grant by object.
-    * Database role membership to Music database: db_datareader
-* Objects to grant NT AUTHORITY\IUSR execute permission:
-    * dbo.usp_AddSongWeb
-    * dbo.usp_UpdateSongList
+    * You should now have a folder C:\inetpub\wwwroot\musicfe
+* Copy **C:\test\musicfeweb\sandbox** directory to C:\inetpub\wwwroot\musicfe directory
+* Restore **music.bak** to SQL Server. This can be done using SQL Server Management Studio (SSMS):
+    * From the Object Explorer pane right-click Databases and click **Restore Database...**
+    * Click the **Device** option and click the ellipsis (...) button to the right, click Add and browse to the repo you cloned in Getting Started. For example: C:\test\musicfeweb\Music.bak, select Music.bak and click OK. Click OK again.
+    * From the Database drop-down select Music
+    * On the left click the **Options** page, check the box **Overwrite the existing database (WITH REPLACE)** and click OK
+        * You should receive a message saying 'Database 'Music' restored successfully.
+* Run the script C:\test\musicfeweb\SQLPermissions.sql.
+    * This adds the IIS anonymous authentication account: NT AUTHORITY\IUSR as a Login in SQL Server and grants IUSR permissions to objects in the Music database. This is required for PHP to run SQL to pull data into the webpage.
 
 ## Running the tests
 * Navigate to http://localhost/musicfe/sandbox/song.html
