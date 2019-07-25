@@ -23,7 +23,7 @@ Clone repository to your local machine
     * Click the **Device** option and click the ellipsis (...) button to the right, click Add and browse to the repo you cloned in Getting Started. For example: C:\test\musicfeweb\Music.bak, select Music.bak and click OK. Click OK again.
     * From the Database drop-down select Music
     * On the left click the **Options** page, check the box **Overwrite the existing database (WITH REPLACE)** and click OK
-        * You should receive a message saying 'Database 'Music' restored successfully.
+        * You should receive a message saying "Database 'Music' restored successfully".
 * Run the script C:\test\musicfeweb\SQLPermissions.sql.
     * This adds the IIS anonymous authentication account: NT AUTHORITY\IUSR as a Login in SQL Server and grants IUSR permissions to objects in the Music database. This is required for PHP to run SQL to pull data into the webpage.
 
