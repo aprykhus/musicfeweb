@@ -367,8 +367,8 @@ function searchGrid() {
    loadJSON(curec, 8, 8);
 }
 function resetGrid() {
+   setTimeout(loadJSON.bind(curec, 1, 4),100);
    populateGrid();
-   setTimeout(scrollGrid, 100);
 }
 
 // Cache the current record (curec) in cookie
