@@ -366,6 +366,10 @@ function scrollGrid() {
 function searchGrid() {
    loadJSON(curec, 8, 8);
 }
+function resetGrid() {
+   populateGrid();
+   setTimeout(scrollGrid, 100);
+}
 
 // Cache the current record (curec) in cookie
 function getCookie(cname) {
