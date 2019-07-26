@@ -331,7 +331,8 @@ function firstSong() {
 }
 function lastSong() {
    document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
-   curec = maxSongID;
+   curec = document.getElementById("tblDataGrid").lastChild.lastChild.lastChild.getElementsByTagName("td")[0].innerHTML;
+   // curec = maxSongID;
    loadJSON(curec, 1, 5);
    document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
    document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
