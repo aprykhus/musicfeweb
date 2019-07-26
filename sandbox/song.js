@@ -169,7 +169,7 @@ function loadJSON(idx, qryType, direction) {
          populateGrid(); // update grid after song is deleted
          document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(true);
       }
-      if (direction == 7)
+      if (direction == 7 || direction == 8)
       {
          document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
       }
@@ -347,7 +347,7 @@ function clearSong() {
 }
 function searchSong() {
    // document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
-   loadJSON(0, 4, 0);
+   loadJSON(0, 4, 9);
    searchGrid();
 }
 function addSong() {
