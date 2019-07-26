@@ -323,7 +323,8 @@ function initSong() {
 }
 function firstSong() {
    document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
-   curec = minSongID;
+   curec = document.getElementsByTagName('tr')[1].getElementsByTagName('td')[0].innerHTML;
+   // curec = minSongID;
    loadJSON(curec, 1, 4);
    document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
    document.getElementsByTagName("tr")[findGridIndex(curec)].scrollIntoView(false);
