@@ -27,6 +27,12 @@ span {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+.lblValidate {
+    color: red;
+    font-size: 8pt;
+    display: none;
+}
+
 /* Table formatting */
 table {
     position: relative;

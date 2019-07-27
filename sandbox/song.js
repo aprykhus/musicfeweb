@@ -348,9 +348,20 @@ function clearSong() {
    document.getElementById("txtPeak").value   = "";
 }
 function searchSong() {
-   // document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
-   loadJSON(0, 4, 9);
-   searchGrid();
+   if (document.getElementById("txtArtist").value == "" && document.getElementById("txtTitle").value  == "")
+   {
+      document.getElementsByClassName("lblValidate")[0].style.display = "inline";
+      document.getElementsByClassName("lblValidate")[1].style.display = "inline";
+      setTimeout(function() {
+         document.getElementsByClassName("lblValidate")[0].style.display = "none";
+         document.getElementsByClassName("lblValidate")[1].style.display = "none";
+      }, 5000);
+   }
+   else
+   {
+      loadJSON(0, 4, 9);
+      searchGrid();
+   }
 }
 function addSong() {
    document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
