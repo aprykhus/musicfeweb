@@ -90,7 +90,7 @@ function loadJSON(idx, qryType, direction) {
             if (qryType == 4)
             {
                curec = jsonObj.SongID; // set search result SongID to curec
-               document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red"; // highlight row
+               // document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red"; // highlight row
                if (curec == minSongID)
                {
                   document.getElementsByTagName("tr")[findGridIndex(curec)].scrollIntoView(false);
@@ -369,8 +369,11 @@ function searchGrid() {
    loadJSON(curec, 8, 8);
 }
 function resetGrid() {
-   setTimeout(loadJSON.bind(curec, 1, 4),100);
-   populateGrid();
+   if (document.getElementById("txtSongID").value != "") // SongID can't be blank
+   {
+      setTimeout(loadJSON.bind(curec, 1, 4),100);
+      populateGrid();
+   }
 }
 
 // Cache the current record (curec) in cookie
