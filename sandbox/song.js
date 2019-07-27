@@ -380,11 +380,8 @@ function searchGrid() {
    loadJSON(curec, 8, 8);
 }
 function resetGrid() {
-   if (document.getElementById("txtSongID").value != "") // SongID can't be blank
-   {
-      setTimeout(loadJSON.bind(curec, 1, 4),100);
+      setTimeout(function() { loadJSON(curec, 1, 4); }, 100);
       populateGrid();
-   }
 }
 
 // Cache the current record (curec) in cookie
