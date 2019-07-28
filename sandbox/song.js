@@ -171,7 +171,7 @@ function loadJSON(idx, qryType, direction) {
       }
       if (direction == 8)
       {
-         // document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
+         document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
       }
    }
 
@@ -425,30 +425,3 @@ function getGridSpot(event) {
       setTimeout(scrollGrid, 100);
    }
 }
-
-// Insurance policy to ensure current record row is highlighted
-var mutationObserver = new MutationObserver(function(mutations) {
-mutations.forEach(function(mutation) {
-         // console.log(mutation);
-         document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
-      });
-});
-
-// Starts listening for changes in the root HTML element of the page.
-
-mutationObserver.observe(document.documentElement, {
-      attributes: true,
-      characterData: true,
-      childList: true,
-      subtree: true,
-      attributeOldValue: true,
-      characterDataOldValue: true
-});
-
-/* document.getElementsByTagName("tr").onload = function () { setCurrentRow() };
-
-function setCurrentRow() {
-   document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
-   scrollGrid();
-   console.log("tr loaded");
-} */
