@@ -409,13 +409,13 @@ document.getElementById("tblDataGrid").onclick = function () { getGridSpot(event
 
 function getGridSpot(event) {
    var oldcurec = curec;
-   document.getElementsByTagName("tr")[findGridIndex(curec)].removeAttribute("style");
    // get parentNode = tr (row), then firstElementChild = td (column) SongID
    var ocSongID = event.target.parentNode.firstElementChild.innerHTML;
    curec = ocSongID;
    // Handle scenario where user clicks outside the grid but in the div element
    if (curec >= minSongID || curec <= maxSongID)
    {
+      document.getElementsByTagName("tr")[findGridIndex(oldcurec)].removeAttribute("style");
       loadJSON(curec, 1, 3);
       document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
    }
