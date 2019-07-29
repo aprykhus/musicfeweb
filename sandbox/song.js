@@ -261,7 +261,9 @@ loadJSON(curec, 2); // set min/max variables on page load
 
 // Button functions
 function nextSong() {
-   if (curec < maxSongID)
+   var lastRow = Number(document.getElementsByTagName("tr").length - 1);
+   var maxGridID = Number(document.getElementsByTagName("tr")[lastRow].getElementsByTagName("td")[0].innerHTML);
+   if (curec < maxGridID)
    {
       // loadJSON(++curec, 1, 1);
       curec = document.getElementsByTagName('tr')[findGridIndex(curec) + 1].getElementsByTagName('td')[0].innerHTML;
@@ -272,14 +274,15 @@ function nextSong() {
    }
 }
 function prevSong() {
-   if (curec > minSongID)
+   var minGridID = Number(document.getElementsByTagName("tr")[1].getElementsByTagName("td")[0].innerHTML);
+   if (curec > minGridID)
    {
       // loadJSON(--curec, 1, 2);
       curec = document.getElementsByTagName('tr')[findGridIndex(curec) - 1].getElementsByTagName('td')[0].innerHTML;
       loadJSON(curec, 1, 2);
       document.getElementsByTagName("tr")[findGridIndex(curec)].style.color = "red";
       document.getElementsByTagName("tr")[findGridIndex(curec)+1].removeAttribute("style");
-      if (curec == minSongID)
+      if (curec == minGridID)
       {
          document.getElementsByTagName("tr")[findGridIndex(curec)-1].scrollIntoView(false);
       }
