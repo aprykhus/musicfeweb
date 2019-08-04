@@ -5,7 +5,7 @@
    <meta charset="UTF-8" title="Song Database">
    <title>Song Database</title>
 </head>
-<body onload="setTimeout(initSong,2000);populateGrid();" onunload="setCurecCookie()">
+<body>
 
 <form>
    <div style="float:left; padding-top: 40px">
@@ -29,7 +29,7 @@
       <div>
          <button type="button" class="btn3" id="btnFirst" onclick="firstSong()" tabindex="9">First</button>
          <button type="button" class="btn3" id="btnPrevious" onclick="prevSong()" tabindex="10">Previous</button>
-         <button type="button" class="btn3" id="btnNext" onclick="nextSong()" tabindex="11">Next</button>
+         <button type="button" class="btn3" id="btnNext" tabindex="11">Next</button>
          <button type="button" class="btn3" id="btnLast" onclick="lastSong()" tabindex="12">Last</button>
       </div>
    </div>

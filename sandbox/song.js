@@ -26,3 +26,32 @@ function chkSnglQut(field) {
    var escquote = "''";
    return field.replace(/'/g, escquote);
 }
+
+// jQuery code
+$(document).ready(function(){
+    $.get("song.php", {"id": "1", "qtype": "1"}, function(result){
+        var jsonObj = JSON.parse(result);
+        $("#txtSongID").val(jsonObj.SongID);
+        $("#txtArtist").val(jsonObj.Artist);
+        $("#txtTitle").val(jsonObj.Title);
+        $("#txtYear").val(jsonObj.Year);
+        $("#txtPeak").val(jsonObj.Peak);
+    });
+    $("#btnNext").click(function(){
+        $.get("song.php", {"id": "1", "qtype": "1"}, function(result){
+            var jsonObj = JSON.parse(result);
+            $("#txtSongID").val(jsonObj.SongID);
+            $("#txtArtist").val(jsonObj.Artist);
+            $("#txtTitle").val(jsonObj.Title);
+            $("#txtYear").val(jsonObj.Year);
+            $("#txtPeak").val(jsonObj.Peak);
+        });
+    });
+    $("#btnClear").click(function(){
+        $("#txtSongID").val("");
+        $("#txtArtist").val("");
+        $("#txtTitle").val("");
+        $("#txtYear").val("");
+        $("#txtPeak").val("");
+    });
+});
