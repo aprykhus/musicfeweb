@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <script type="text/javascript" src="song.js"></script>
    <link rel="stylesheet" type="text/css" href="song.css">
    <meta charset="UTF-8" title="Song Database">
    <title>Song Database</title>
@@ -17,7 +18,7 @@
       <div>
          <span style="padding-left: 11px">SongID:</span> <input type="text" id="txtSongID" style="width: 50px" tabindex="1">
          <button type="button" class="btn2" id="btnGo" style="width:40px" onclick="goSong()" tabindex="2">Go</button>
-         <button type="button" class="btn2" id="btnClear" style="width:50px" tabindex="3" onclick="clearSong()">Clear</button>
+         <button type="button" class="btn2" id="btnClear" style="width:50px" tabindex="3">Clear</button>
          <button type="button" class="btn2" id="btnSearch" tabindex="4" onclick="searchSong()">Search</button>
          <button type="button" class="btn2" id="btnReset" tabindex="4" onclick="resetGrid()">Reset</button>
          <br><br>
@@ -28,7 +29,7 @@
       </div>
       <div>
          <button type="button" class="btn3" id="btnFirst" onclick="firstSong()" tabindex="9">First</button>
-         <button type="button" class="btn3" id="btnPrevious" onclick="prevSong()" tabindex="10">Previous</button>
+         <button type="button" class="btn3" id="btnPrevious" tabindex="10">Previous</button>
          <button type="button" class="btn3" id="btnNext" tabindex="11">Next</button>
          <button type="button" class="btn3" id="btnLast" onclick="lastSong()" tabindex="12">Last</button>
       </div>
@@ -43,7 +44,6 @@
 <div id="tblDataGrid" style="overflow-y: scroll; height:407px; width:40%; border: 1px solid black">
 </div>
 
-<script type="text/javascript" src="song.js"></script>
 
 </body>
 </html>

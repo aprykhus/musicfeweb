@@ -27,9 +27,16 @@ function chkSnglQut(field) {
    return field.replace(/'/g, escquote);
 }
 
+curec = 1;
+
 // jQuery code
 $(document).ready(function(){
-    $.get("song.php", {"id": "1", "qtype": "1"}, function(result){
+    $.post("song.php", {"id": curec, "qtype": "2"}, function(result){
+        var jsonObj = JSON.parse(result);
+        minSongID = jsonObj.minSongID;
+        maxSongID = jsonObj.maxSongID;
+    });
+    $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
         var jsonObj = JSON.parse(result);
         $("#txtSongID").val(jsonObj.SongID);
         $("#txtArtist").val(jsonObj.Artist);
@@ -38,7 +45,17 @@ $(document).ready(function(){
         $("#txtPeak").val(jsonObj.Peak);
     });
     $("#btnNext").click(function(){
-        $.get("song.php", {"id": "1", "qtype": "1"}, function(result){
+        $.post("song.php", {"id": ++curec, "qtype": "1"}, function(result){
+            var jsonObj = JSON.parse(result);
+            $("#txtSongID").val(jsonObj.SongID);
+            $("#txtArtist").val(jsonObj.Artist);
+            $("#txtTitle").val(jsonObj.Title);
+            $("#txtYear").val(jsonObj.Year);
+            $("#txtPeak").val(jsonObj.Peak);
+        });
+    });
+    $("#btnPrevious").click(function(){
+        $.post("song.php", {"id": --curec, "qtype": "1"}, function(result){
             var jsonObj = JSON.parse(result);
             $("#txtSongID").val(jsonObj.SongID);
             $("#txtArtist").val(jsonObj.Artist);
