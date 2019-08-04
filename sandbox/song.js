@@ -68,6 +68,18 @@ $(document).ready(function(){
         });
     });
     $("#btnFirst").click(function(){
+        curec = minSongID;
+        $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
+            var jsonObj = JSON.parse(result);
+            $("#txtSongID").val(jsonObj.SongID);
+            $("#txtArtist").val(jsonObj.Artist);
+            $("#txtTitle").val(jsonObj.Title);
+            $("#txtYear").val(jsonObj.Year);
+            $("#txtPeak").val(jsonObj.Peak);
+        });
+    });
+    $("#btnLast1").click(function(){
+        curec = maxSongID;
         $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
             var jsonObj = JSON.parse(result);
             $("#txtSongID").val(jsonObj.SongID);
