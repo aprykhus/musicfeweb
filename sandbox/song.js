@@ -89,6 +89,32 @@ $(document).ready(function(){
             $("#txtPeak").val(jsonObj.Peak);
         });
     });
+    $("#btnGo").click(function(){
+        lastCurec = curec;
+        curec = $("#txtSongID").val();
+        if (curec == "" || curec < minSongID || curec > maxSongID)
+        {
+            alert("Invalid SongID. Try again.");
+            curec = lastCurec;
+        }
+        $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
+            var jsonObj = JSON.parse(result);
+            if (jsonObj == null) {
+                alert("Sorry, that SongID doesn't exist.");
+                curec = lastCurec;
+                $("#txtSongID").val(curec);
+            }
+            else
+            {
+                $("#txtSongID").val(jsonObj.SongID);
+                $("#txtArtist").val(jsonObj.Artist);
+                $("#txtTitle").val(jsonObj.Title);
+                $("#txtYear").val(jsonObj.Year);
+                $("#txtPeak").val(jsonObj.Peak);
+            }
+
+        });
+    });
     $("#btnClear").click(function(){
         $("#txtSongID").val("");
         $("#txtArtist").val("");
