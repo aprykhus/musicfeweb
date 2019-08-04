@@ -27,14 +27,13 @@ function chkSnglQut(field) {
    return field.replace(/'/g, escquote);
 }
 
-curec = 1;
-
 // jQuery code
 $(document).ready(function(){
     $.post("song.php", {"id": curec, "qtype": "2"}, function(result){
         var jsonObj = JSON.parse(result);
         minSongID = jsonObj.minSongID;
         maxSongID = jsonObj.maxSongID;
+        curec = minSongID;
     });
     $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
         var jsonObj = JSON.parse(result);
