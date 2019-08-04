@@ -78,7 +78,7 @@ $(document).ready(function(){
             $("#txtPeak").val(jsonObj.Peak);
         });
     });
-    $("#btnLast1").click(function(){
+    $("#btnLast").click(function(){
         curec = maxSongID;
         $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
             var jsonObj = JSON.parse(result);
