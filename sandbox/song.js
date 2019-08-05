@@ -46,7 +46,7 @@ $(document).ready(function(){
         $("#txtPeak").val(jsonObj.Peak);
     });
     $("#btnNext").click(function(){
-        (curec < maxSongID) ? curec++ : curec;
+        (curec < maxSongID) ? curec++ : curec = curec;
         $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
             var jsonObj = JSON.parse(result);
             $("#txtSongID").val(jsonObj.SongID);
@@ -57,7 +57,7 @@ $(document).ready(function(){
         });
     });
     $("#btnPrevious").click(function(){
-        (curec > minSongID) ? curec-- : curec;
+        (curec > minSongID) ? curec-- : curec = curec;
         $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
             var jsonObj = JSON.parse(result);
             $("#txtSongID").val(jsonObj.SongID);
@@ -137,6 +137,42 @@ $(document).ready(function(){
             url: "song.php",
             method: "POST",
             data: "id=" + curec + "&qtype=3&edit=" + params
+        });
+    });
+    $("#btnAddSong").click(function(){
+        var szArtist = "", szTitle = "", szYear = "", szPeak = "";
+        szArtist = encode(chkSnglQut($("#txtArtist").val()));
+        szTitle = encode(chkSnglQut($("#txtTitle").val()));
+        szYear = $("#txtYear").val();
+        szPeak = $("#txtPeak").val();
+        if (szPeak == "")
+        {
+           szPeak = "NULL";
+        }
+        var params = JSON.stringify({artist: szArtist, title: szTitle, year: szYear, peak: szPeak});
+        var request = $.ajax({
+            url: "song.php",
+            method: "POST",
+            data: "id=" + curec + "&qtype=5&edit=" + params
+        });
+        request.done(function(msg){
+            if (msg == -1)
+            {
+                alert("Song already exists by this artist.");
+            }
+            else
+            {
+                maxSongID = msg;
+                curec = maxSongID;
+                $("#txtSongID").val(curec);
+            }
+        });
+    });
+    $("#btnDelete").click(function(){
+        $.ajax({
+            url: "song.php",
+            method: "POST",
+            data: "id=" + curec + "&qtype=6"
         });
     });
 });
