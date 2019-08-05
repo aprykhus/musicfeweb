@@ -45,6 +45,9 @@ $(document).ready(function(){
         $("#txtYear").val(jsonObj.Year);
         $("#txtPeak").val(jsonObj.Peak);
     });
+    $.post("song.php", {"id": curec, "qtype": "7"}, function(result){
+        $("#tblDataGrid").html(result);
+    });
     $("#btnNext").click(function(){
         (curec < maxSongID) ? curec++ : curec = curec;
         $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
