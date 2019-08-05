@@ -58,6 +58,8 @@ $(document).ready(function(){
             $("#txtYear").val(jsonObj.Year);
             $("#txtPeak").val(jsonObj.Peak);
         });
+        $("#tblDataGrid tr").eq(curec-1).removeAttr("style");
+        $("#tblDataGrid tr").eq(curec).css("color", "red");
     });
     $("#btnPrevious").click(function(){
         (curec > minSongID) ? curec-- : curec = curec;
