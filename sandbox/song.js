@@ -112,7 +112,6 @@ $(document).ready(function(){
                 $("#txtYear").val(jsonObj.Year);
                 $("#txtPeak").val(jsonObj.Peak);
             }
-
         });
     });
     $("#btnClear").click(function(){
@@ -121,5 +120,23 @@ $(document).ready(function(){
         $("#txtTitle").val("");
         $("#txtYear").val("");
         $("#txtPeak").val("");
+    });
+    $("#btnUpdate").click(function(){
+        var szSongID = "", szArtist = "", szTitle = "", szYear = "", szPeak = "";
+        szSongID = $("#txtSongID").val();
+        szArtist = encode(chkSnglQut($("#txtArtist").val()));
+        szTitle = encode(chkSnglQut($("#txtTitle").val()));
+        szYear = $("#txtYear").val();
+        szPeak = $("#txtPeak").val();
+        if (szPeak == "")
+        {
+           szPeak = "NULL";
+        }
+        var params = JSON.stringify({songid: szSongID, artist: szArtist, title: szTitle, year: szYear, peak: szPeak});
+        $.ajax({
+            url: "song.php",
+            method: "POST",
+            data: "id=" + curec + "&qtype=3&edit=" + params
+        });
     });
 });
