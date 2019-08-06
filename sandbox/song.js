@@ -50,9 +50,10 @@ curec = 1;
 /* Function that searches for the SongID in the table and returns the grid 
 index. Using jQuery selectors */
 function findGridIndex(searchStr) {
-    var rowCount = $("#tblDataGrid tr").length;
+    var domRow = document.getElementsByTagName('tr');
+    var rowCount = domRow.length;
     for (var i = 1; i < rowCount; i++) {
-       if ($("tr").eq(i).find("td").eq(0).text().search("^" + searchStr + "$") !== -1) {
+       if (domRow[i].getElementsByTagName('td')[0].innerHTML.search("^" + searchStr + "$") !== -1) {
           return i;
        }
     }
