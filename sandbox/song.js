@@ -233,9 +233,31 @@ $(document).ready(function(){
             }
             else
             {
-                maxSongID = msg;
-                curec = maxSongID;
+                var domRow = document.getElementsByTagName("tr");
+                domRow[findGridIndex(curec)].removeAttribute("style");
+                /* Handle scenario found in testing, if reponse is blank get
+                the max songID and assign to curec */
+                if (msg == "")
+                {
+                    $.post("song.php", {"id": curec, "qtype": "2"}, function(result){
+                        var jsonObj = JSON.parse(result);
+                        minSongID = jsonObj.minSongID;
+                        maxSongID = jsonObj.maxSongID;
+                        curec = maxSongID;
+                    });
+                }
+                else
+                {
+                    maxSongID = msg;
+                    curec = maxSongID;
+                }
                 $("#txtSongID").val(curec);
+                var result = $.post("song.php", {"id": curec, "qtype": "7"}, function(result){
+                    $("#tblDataGrid").html(result);
+                });
+                result.done(function(){
+                    domRow[findGridIndex(curec)].style.color = "red";
+                });
             }
         });
     });
