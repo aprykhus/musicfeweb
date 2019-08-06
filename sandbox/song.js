@@ -123,7 +123,6 @@ $(document).ready(function(){
         {
             $.post("song.php", {"id": --curec, "qtype": "1"}, prevSong);
         }
-
     });
     $("#btnFirst").click(function(){
         curec = minSongID;
