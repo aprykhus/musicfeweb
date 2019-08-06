@@ -153,10 +153,10 @@ $(document).ready(function(){
             $("#txtTitle").val(jsonObj.Title);
             $("#txtYear").val(jsonObj.Year);
             $("#txtPeak").val(jsonObj.Peak);
+        }).done(function(){
+            domRow[findGridIndex(curec)].style.color = "red";
+            domRow[findGridIndex(curec)].scrollIntoView(false);
         });
-        domRow[findGridIndex(curec)].style.color = "red";
-        domRow[findGridIndex(curec)].scrollIntoView(false);
-
     });
     $("#btnLast").click(function(){
         var domRow = document.getElementsByTagName("tr");
@@ -169,9 +169,10 @@ $(document).ready(function(){
             $("#txtTitle").val(jsonObj.Title);
             $("#txtYear").val(jsonObj.Year);
             $("#txtPeak").val(jsonObj.Peak);
+        }).done(function(){
+            domRow[findGridIndex(curec)].style.color = "red";
+            domRow[findGridIndex(curec)-1].scrollIntoView(true);
         });
-        domRow[findGridIndex(curec)].style.color = "red";
-        domRow[findGridIndex(curec)-1].scrollIntoView(true);
     });
     $("#btnGo").click(function(){
         lastCurec = curec;
