@@ -173,6 +173,9 @@ $(document).ready(function(){
                 $("#txtTitle").val(jsonObj.Title);
                 $("#txtYear").val(jsonObj.Year);
                 $("#txtPeak").val(jsonObj.Peak);
+                var domRow = document.getElementsByTagName("tr");
+                domRow[findGridIndex(lastCurec)].removeAttribute("style");
+                domRow[findGridIndex(curec)].style.color = "red";
             }
         });
     });
