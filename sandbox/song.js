@@ -1,10 +1,16 @@
+/* JavaScript and jQuery sends ajax queries over http to song.php that in turn 
+performs SQL queries and stored procs and returns JSON or html to client 
+depending on the query type (qtype) that's send as parameter in HTTP POST*/
+
 // global variables
 var curec = 0; // current record (SongID) on webpage. In other words, the cursor.
 var minSongID = 0;
 var maxSongID = 0;
 var lastCurec = 0;
 
-// functions
+/* *****************************************************************************
+***************************JAVASCRIPT FUNCTIONS*********************************
+ **************************************************************************** */
 
 function encode(strVal)
 {
@@ -27,9 +33,67 @@ function chkSnglQut(field) {
    return field.replace(/'/g, escquote);
 }
 
+
+
 curec = 1;
 
+/* ****************************************************************************
+********  ******     *******  ******  ***         ***       ****  ******  *****
+********  ****   ***   *****  ******  ***  **********  ****  ****   **   ******
+********  ***  *******  ****  ******  ***      ******  **   *******    ********
+**  ****  ****   ***   *****   ****   ***  **********  ***  ********  *********
+****    ********    **  *****        ****         ***  ****  *******  *********
+ *************************************************************************** */
+
 // jQuery code
+
+/* Function that searches for the SongID in the table and returns the grid 
+index. Using jQuery selectors */
+function findGridIndex(searchStr) {
+    var rowCount = $("#tblDataGrid tr").length;
+    for (var i = 1; i < rowCount; i++) {
+       if ($("tr").eq(i).find("td").eq(0).text().search("^" + searchStr + "$") !== -1) {
+          return i;
+       }
+    }
+ }
+
+ var nextSong = function(result){
+    var jsonObj = JSON.parse(result);
+    // skip missing songIDs (e.g. songs that were deleted)
+    if (jsonObj == null)
+    {
+        curec++;
+        $.post("song.php", {"id": curec, "qtype": "1"}, nextSong);
+    }
+    else
+    {
+        $("#txtSongID").val(jsonObj.SongID);
+        $("#txtArtist").val(jsonObj.Artist);
+        $("#txtTitle").val(jsonObj.Title);
+        $("#txtYear").val(jsonObj.Year);
+        $("#txtPeak").val(jsonObj.Peak);
+    }
+ }
+
+ var prevSong = function(result){
+    var jsonObj = JSON.parse(result);
+    // skip missing songIDs (e.g. songs that were deleted)
+    if (jsonObj == null)
+    {
+        curec--;
+        $.post("song.php", {"id": curec, "qtype": "1"}, prevSong);
+    }
+    else
+    {
+        $("#txtSongID").val(jsonObj.SongID);
+        $("#txtArtist").val(jsonObj.Artist);
+        $("#txtTitle").val(jsonObj.Title);
+        $("#txtYear").val(jsonObj.Year);
+        $("#txtPeak").val(jsonObj.Peak);
+    }
+ }
+
 $(document).ready(function(){
     $.post("song.php", {"id": curec, "qtype": "2"}, function(result){
         var jsonObj = JSON.parse(result);
@@ -49,28 +113,17 @@ $(document).ready(function(){
         $("#tblDataGrid").html(result);
     });
     $("#btnNext").click(function(){
-        (curec < maxSongID) ? curec++ : curec = curec;
-        $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
-            var jsonObj = JSON.parse(result);
-            $("#txtSongID").val(jsonObj.SongID);
-            $("#txtArtist").val(jsonObj.Artist);
-            $("#txtTitle").val(jsonObj.Title);
-            $("#txtYear").val(jsonObj.Year);
-            $("#txtPeak").val(jsonObj.Peak);
-        });
-        $("#tblDataGrid tr").eq(curec-1).removeAttr("style");
-        $("#tblDataGrid tr").eq(curec).css("color", "red");
+        if (curec < maxSongID)
+        {
+            $.post("song.php", {"id": ++curec, "qtype": "1"}, nextSong);
+        }
     });
     $("#btnPrevious").click(function(){
-        (curec > minSongID) ? curec-- : curec = curec;
-        $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
-            var jsonObj = JSON.parse(result);
-            $("#txtSongID").val(jsonObj.SongID);
-            $("#txtArtist").val(jsonObj.Artist);
-            $("#txtTitle").val(jsonObj.Title);
-            $("#txtYear").val(jsonObj.Year);
-            $("#txtPeak").val(jsonObj.Peak);
-        });
+        if (curec > minSongID)
+        {
+            $.post("song.php", {"id": --curec, "qtype": "1"}, prevSong);
+        }
+
     });
     $("#btnFirst").click(function(){
         curec = minSongID;
