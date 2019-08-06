@@ -266,6 +266,39 @@ $(document).ready(function(){
             url: "song.php",
             method: "POST",
             data: "id=" + curec + "&qtype=6"
+        }).done(function(){
+            var domRow = document.getElementsByTagName("tr");
+            domRow[findGridIndex(curec)].removeAttribute("style");
+            if (curec != maxSongID)
+            {
+                $.post("song.php", {"id": ++curec, "qtype": "1"}, nextSong);
+            }
+            if (curec == maxSongID)
+            {
+                $.post("song.php", {"id": --curec, "qtype": "1"}, prevSong);
+                $.post("song.php", {"id": curec, "qtype": "2"}, function(result){
+                    var jsonObj = JSON.parse(result);
+                    minSongID = jsonObj.minSongID;
+                    maxSongID = jsonObj.maxSongID;
+                    curec = maxSongID;
+                });
+            }
+            if (curec == minSongID)
+            {
+                $.post("song.php", {"id": ++curec, "qtype": "1"}, nextSong);
+                $.post("song.php", {"id": curec, "qtype": "2"}, function(result){
+                    var jsonObj = JSON.parse(result);
+                    minSongID = jsonObj.minSongID;
+                    maxSongID = jsonObj.maxSongID;
+                    curec = minSongID;
+                });
+            }
+            $.post("song.php", {"id": curec, "qtype": "7"}, function(result){
+                $("#tblDataGrid").html(result);
+            }).done(function(){
+                var domRow = document.getElementsByTagName("tr");
+                domRow[findGridIndex(curec)].style.color = "red";
+            });
         });
     });
 });
