@@ -62,6 +62,7 @@ function findGridIndex(searchStr) {
  var nextSong = function(result){
     var jsonObj = JSON.parse(result);
     // skip missing songIDs (e.g. songs that were deleted)
+    // if response is null (empty) re-run query (recursively)
     if (jsonObj == null)
     {
         $.post("song.php", {"id": ++curec, "qtype": "1"}, nextSong);
@@ -83,6 +84,7 @@ function findGridIndex(searchStr) {
  var prevSong = function(result){
     var jsonObj = JSON.parse(result);
     // skip missing songIDs (e.g. songs that were deleted)
+    // if response is null (empty) re-run query (recursively)
     if (jsonObj == null)
     {
         $.post("song.php", {"id": --curec, "qtype": "1"}, prevSong);
