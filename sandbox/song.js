@@ -72,6 +72,9 @@ function findGridIndex(searchStr) {
         $("#txtTitle").val(jsonObj.Title);
         $("#txtYear").val(jsonObj.Year);
         $("#txtPeak").val(jsonObj.Peak);
+        var domRow = document.getElementsByTagName("tr");
+        domRow[findGridIndex(curec)-1].removeAttribute("style");
+        domRow[findGridIndex(curec)].style.color = "red";
     }
  }
 
@@ -89,6 +92,9 @@ function findGridIndex(searchStr) {
         $("#txtTitle").val(jsonObj.Title);
         $("#txtYear").val(jsonObj.Year);
         $("#txtPeak").val(jsonObj.Peak);
+        var domRow = document.getElementsByTagName("tr");
+        domRow[findGridIndex(curec)+1].removeAttribute("style");
+        domRow[findGridIndex(curec)].style.color = "red";
     }
  }
 
