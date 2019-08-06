@@ -106,7 +106,6 @@ function findGridIndex(searchStr) {
         {
             domRow[findGridIndex(curec)-1].scrollIntoView(true);
         }
-
     }
  }
 
