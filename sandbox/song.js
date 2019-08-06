@@ -144,6 +144,8 @@ $(document).ready(function(){
         domRow[findGridIndex(curec)].style.color = "red";
     });
     $("#btnLast").click(function(){
+        var domRow = document.getElementsByTagName("tr");
+        domRow[findGridIndex(curec)].removeAttribute("style");
         curec = maxSongID;
         $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
             var jsonObj = JSON.parse(result);
@@ -153,6 +155,7 @@ $(document).ready(function(){
             $("#txtYear").val(jsonObj.Year);
             $("#txtPeak").val(jsonObj.Peak);
         });
+        domRow[findGridIndex(curec)].style.color = "red";
     });
     $("#btnGo").click(function(){
         lastCurec = curec;
