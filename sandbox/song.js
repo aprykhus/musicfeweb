@@ -63,8 +63,7 @@ function findGridIndex(searchStr) {
     // skip missing songIDs (e.g. songs that were deleted)
     if (jsonObj == null)
     {
-        curec++;
-        $.post("song.php", {"id": curec, "qtype": "1"}, nextSong);
+        $.post("song.php", {"id": ++curec, "qtype": "1"}, nextSong);
     }
     else
     {
@@ -81,8 +80,7 @@ function findGridIndex(searchStr) {
     // skip missing songIDs (e.g. songs that were deleted)
     if (jsonObj == null)
     {
-        curec--;
-        $.post("song.php", {"id": curec, "qtype": "1"}, prevSong);
+        $.post("song.php", {"id": --curec, "qtype": "1"}, prevSong);
     }
     else
     {
