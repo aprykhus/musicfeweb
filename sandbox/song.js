@@ -76,6 +76,7 @@ function findGridIndex(searchStr) {
         var domRow = document.getElementsByTagName("tr");
         domRow[findGridIndex(curec)-1].removeAttribute("style");
         domRow[findGridIndex(curec)].style.color = "red";
+        domRow[findGridIndex(curec)-1].scrollIntoView(true);
     }
  }
 
@@ -94,8 +95,18 @@ function findGridIndex(searchStr) {
         $("#txtYear").val(jsonObj.Year);
         $("#txtPeak").val(jsonObj.Peak);
         var domRow = document.getElementsByTagName("tr");
+        var minGridID = Number(domRow[1].getElementsByTagName("td")[0].innerHTML);
         domRow[findGridIndex(curec)+1].removeAttribute("style");
         domRow[findGridIndex(curec)].style.color = "red";
+        if (curec == minGridID)
+        {
+            domRow[findGridIndex(curec)-1].scrollIntoView(false);
+        }
+        else
+        {
+            domRow[findGridIndex(curec)-1].scrollIntoView(true);
+        }
+
     }
  }
 
