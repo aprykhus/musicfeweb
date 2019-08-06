@@ -116,6 +116,9 @@ $(document).ready(function(){
     });
     $.post("song.php", {"id": curec, "qtype": "7"}, function(result){
         $("#tblDataGrid").html(result);
+    }).done(function(){
+        var domRow = document.getElementsByTagName("tr");
+        domRow[findGridIndex(curec)].style.color = "red";
     });
     $("#btnNext").click(function(){
         if (curec < maxSongID)
