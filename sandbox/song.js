@@ -208,6 +208,13 @@ $(document).ready(function(){
             url: "song.php",
             method: "POST",
             data: "id=" + curec + "&qtype=3&edit=" + params
+        }).done(function(){
+            $.post("song.php", {"id": curec, "qtype": "7"}, function(result){
+                $("#tblDataGrid").html(result);
+            }).done(function(){
+                var domRow = document.getElementsByTagName("tr");
+                domRow[findGridIndex(curec)].style.color = "red";
+            });
         });
     });
     $("#btnAddSong").click(function(){
