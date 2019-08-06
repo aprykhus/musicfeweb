@@ -144,7 +144,6 @@ $(document).ready(function(){
     });
     $("#btnFirst").click(function(){
         var domRow = document.getElementsByTagName("tr");
-        var minGridID = Number(domRow[1].getElementsByTagName("td")[0].innerHTML);
         domRow[findGridIndex(curec)].removeAttribute("style");
         curec = minSongID;
         $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
