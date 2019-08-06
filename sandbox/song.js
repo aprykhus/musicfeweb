@@ -1,6 +1,6 @@
 /* JavaScript and jQuery sends ajax queries over http to song.php that in turn 
 performs SQL queries and stored procs and returns JSON or html to client 
-depending on the query type (qtype) that's send as parameter in HTTP POST*/
+depending on the query type (qtype) that's sent as parameter in HTTP POST*/
 
 // global variables
 var curec = 0; // current record (SongID) on webpage. In other words, the cursor.
