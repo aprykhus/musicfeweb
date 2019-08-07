@@ -297,10 +297,6 @@ $(document).ready(function(){
         }).done(function(){
             var domRow = document.getElementsByTagName("tr");
             domRow[findGridIndex(curec)].removeAttribute("style");
-            if (curec != maxSongID)
-            {
-                $.post("song.php", {"id": ++curec, "qtype": "1"}, nextSong);
-            }
             if (curec == maxSongID)
             {
                 $.post("song.php", {"id": --curec, "qtype": "1"}, prevSong);
@@ -311,7 +307,7 @@ $(document).ready(function(){
                     curec = maxSongID;
                 });
             }
-            if (curec == minSongID)
+            else if (curec == minSongID)
             {
                 $.post("song.php", {"id": ++curec, "qtype": "1"}, nextSong);
                 $.post("song.php", {"id": curec, "qtype": "2"}, function(result){
@@ -320,6 +316,10 @@ $(document).ready(function(){
                     maxSongID = jsonObj.maxSongID;
                     curec = minSongID;
                 });
+            }
+            else if (curec != maxSongID)
+            {
+                $.post("song.php", {"id": ++curec, "qtype": "1"}, nextSong);
             }
             $.post("song.php", {"id": curec, "qtype": "7"}, function(result){
                 $("#tblDataGrid").html(result);
