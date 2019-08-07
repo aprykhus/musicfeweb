@@ -62,7 +62,7 @@ function getCookie(cname) {
     return "";
  }
  function setCurecCookie() {
-    document.cookie = "curec=" + curec;
+    document.cookie = "curec=" + curec + ";expires=Fri, 31 Dec 9999 23:59:59 GMT";
  }
 
 curec = 1;
@@ -132,6 +132,7 @@ curec = 1;
 // Main jQuery function
 $(document).ready(function(){
     $(window).on("beforeunload", setCurecCookie); // cookie event handler
+    // $.cookie('curec', curec, {expires: 365});
     curec = Number(getCookie("curec")); // get cookie from last session
     // Grab min/max songID from SQL
     $.post("song.php", {"id": curec, "qtype": "2"}, function(result){
