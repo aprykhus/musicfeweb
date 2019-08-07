@@ -358,7 +358,6 @@ $(document).ready(function(){
                     var domRow = document.getElementsByTagName("tr");
                     domRow[findGridIndex(lastCurec)].removeAttribute("style");
                     domRow[findGridIndex(curec)].style.color = "red";
-                    // domRow[findGridIndex(curec)-1].scrollIntoView(true);
                 }
             });
             domRow[findGridIndex(curec)].style.color = "red";
