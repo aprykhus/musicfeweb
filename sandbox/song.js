@@ -33,6 +33,18 @@ function chkSnglQut(field) {
    return field.replace(/'/g, escquote);
 }
 
+/* Function that searches for the SongID in the table and returns the grid 
+index. Using jQuery selectors */
+function findGridIndex(searchStr) {
+    var domRow = document.getElementsByTagName('tr');
+    var rowCount = domRow.length;
+    for (var i = 1; i < rowCount; i++) {
+       if (domRow[i].getElementsByTagName('td')[0].innerHTML.search("^" + searchStr + "$") !== -1) {
+          return i;
+       }
+    }
+ }
+
 // Cache the current record (curec) in cookie
 function getCookie(cname) {
     var name = cname + "=";
@@ -64,18 +76,6 @@ curec = 1;
  *************************************************************************** */
 
 // jQuery code
-
-/* Function that searches for the SongID in the table and returns the grid 
-index. Using jQuery selectors */
-function findGridIndex(searchStr) {
-    var domRow = document.getElementsByTagName('tr');
-    var rowCount = domRow.length;
-    for (var i = 1; i < rowCount; i++) {
-       if (domRow[i].getElementsByTagName('td')[0].innerHTML.search("^" + searchStr + "$") !== -1) {
-          return i;
-       }
-    }
- }
 
  var nextSong = function(result){
     var jsonObj = JSON.parse(result);
