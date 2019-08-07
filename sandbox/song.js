@@ -129,13 +129,17 @@ curec = 1;
     }
  }
 
+// Main jQuery function
 $(document).ready(function(){
+    $(window).on("beforeunload", setCurecCookie); // cookie event handler
+    curec = Number(getCookie("curec")); // get cookie from last session
+    // Grab min/max songID from SQL
     $.post("song.php", {"id": curec, "qtype": "2"}, function(result){
         var jsonObj = JSON.parse(result);
         minSongID = jsonObj.minSongID;
         maxSongID = jsonObj.maxSongID;
-        curec = minSongID;
     });
+    // Initialize form
     $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
         var jsonObj = JSON.parse(result);
         $("#txtSongID").val(jsonObj.SongID);
@@ -144,6 +148,7 @@ $(document).ready(function(){
         $("#txtYear").val(jsonObj.Year);
         $("#txtPeak").val(jsonObj.Peak);
     });
+    // Initialize grid
     $.post("song.php", {"id": curec, "qtype": "7"}, function(result){
         $("#tblDataGrid").html(result);
     }).done(function(){
