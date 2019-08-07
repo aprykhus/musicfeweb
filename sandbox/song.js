@@ -326,6 +326,7 @@ $(document).ready(function(){
             }).done(function(){
                 var domRow = document.getElementsByTagName("tr");
                 domRow[findGridIndex(curec)].style.color = "red";
+                domRow[findGridIndex(curec)-1].scrollIntoView(true);
             });
         });
     });
