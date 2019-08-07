@@ -330,4 +330,44 @@ $(document).ready(function(){
             });
         });
     });
+    // Select record by clicking on grid row
+    function getGridSpot(event) {
+        var oldcurec = curec;
+        // get parentNode = tr (row), then firstElementChild = td (column) SongID
+        var ocSongID = event.target.parentNode.firstElementChild.innerHTML;
+        curec = ocSongID;
+        // Handle scenario where user clicks outside the grid but in the div element
+        if (curec >= minSongID || curec <= maxSongID)
+        {
+            var domRow = document.getElementsByTagName("tr");
+            domRow[findGridIndex(oldcurec)].removeAttribute("style");
+            $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
+                var jsonObj = JSON.parse(result);
+                if (jsonObj == null) {
+                    alert("Sorry, that SongID doesn't exist.");
+                    curec = lastCurec;
+                    $("#txtSongID").val(curec);
+                }
+                else
+                {
+                    $("#txtSongID").val(jsonObj.SongID);
+                    $("#txtArtist").val(jsonObj.Artist);
+                    $("#txtTitle").val(jsonObj.Title);
+                    $("#txtYear").val(jsonObj.Year);
+                    $("#txtPeak").val(jsonObj.Peak);
+                    var domRow = document.getElementsByTagName("tr");
+                    domRow[findGridIndex(lastCurec)].removeAttribute("style");
+                    domRow[findGridIndex(curec)].style.color = "red";
+                    // domRow[findGridIndex(curec)-1].scrollIntoView(true);
+                }
+            });
+            domRow[findGridIndex(curec)].style.color = "red";
+        }
+        else
+        {
+            curec = oldcurec;
+            domRow[findGridIndex(curec)-1].scrollIntoView(true);
+        }
+    }
+    $("#tblDataGrid").click(getGridSpot);
 });
