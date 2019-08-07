@@ -138,23 +138,31 @@ $(document).ready(function(){
         var jsonObj = JSON.parse(result);
         minSongID = jsonObj.minSongID;
         maxSongID = jsonObj.maxSongID;
-    });
-    // Initialize form
-    $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
-        var jsonObj = JSON.parse(result);
-        $("#txtSongID").val(jsonObj.SongID);
-        $("#txtArtist").val(jsonObj.Artist);
-        $("#txtTitle").val(jsonObj.Title);
-        $("#txtYear").val(jsonObj.Year);
-        $("#txtPeak").val(jsonObj.Peak);
-    });
-    // Initialize grid
-    $.post("song.php", {"id": curec, "qtype": "7"}, function(result){
-        $("#tblDataGrid").html(result);
     }).done(function(){
-        var domRow = document.getElementsByTagName("tr");
-        domRow[findGridIndex(curec)].style.color = "red";
+        if (curec == "" || curec == null)
+        {
+            curec = minSongID;
+        }
+            // Initialize form once min/max is set
+        $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
+            var jsonObj = JSON.parse(result);
+            $("#txtSongID").val(jsonObj.SongID);
+            $("#txtArtist").val(jsonObj.Artist);
+            $("#txtTitle").val(jsonObj.Title);
+            $("#txtYear").val(jsonObj.Year);
+            $("#txtPeak").val(jsonObj.Peak);
+        }).done(function(){
+            // Initialize grid once form is initialized
+            $.post("song.php", {"id": curec, "qtype": "7"}, function(result){
+                $("#tblDataGrid").html(result);
+            }).done(function(){
+                var domRow = document.getElementsByTagName("tr");
+                domRow[findGridIndex(curec)].style.color = "red";
+                domRow[findGridIndex(curec)-1].scrollIntoView(true);
+            });
+        });
     });
+
     $("#btnNext").click(function(){
         if (curec < maxSongID)
         {
