@@ -369,5 +369,5 @@ $(document).ready(function(){
             domRow[findGridIndex(curec)-1].scrollIntoView(true);
         }
     }
-    $("#tblDataGrid").click(getGridSpot);
+    $("#tblDataGrid").click(getGridSpot); // fire function on clicking data grid
 });
