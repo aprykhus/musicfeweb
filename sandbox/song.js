@@ -369,4 +369,12 @@ $(document).ready(function(){
         }
     }
     $("#tblDataGrid").click(getGridSpot); // fire function clicking data grid
+
+    // Search Filter
+    $("#txtSearch").on("keyup", function(){
+        var value = $(this).val().toLowerCase();
+        $("#tblDataGrid tr").filter(function(){
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    })
 });
