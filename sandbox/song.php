@@ -175,7 +175,7 @@ if ($qtype == 7 || $qtype == 8)
     </tr>
     </thead>
     <tbody>
- ";
+    ";
  
     while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC)){
         echo "<tr><td>".$row['SongID']."</td><td>".utf8_encode($row['Artist'])
