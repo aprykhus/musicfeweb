@@ -261,7 +261,7 @@ $(document).ready(function(){
             method: "POST",
             data: "id=" + curec + "&qtype=3&edit=" + params
         }).done(function(){
-            $.post("song.php", {"id": curec, "qtype": "7"}, function(result){
+            $.post("song.php", {"id": curec, "qtype": "7", "edit": "null"}, function(result){
                 $("#tblDataGrid").html(result);
             }).done(function(){
                 var domRow = document.getElementsByTagName("tr");
@@ -298,7 +298,7 @@ $(document).ready(function(){
                 the max songID and assign to curec */
                 if (msg == "")
                 {
-                    $.post("song.php", {"id": curec, "qtype": "2"}, function(result){
+                    $.post("song.php", {"id": curec, "qtype": "2", "edit": "null"}, function(result){
                         var jsonObj = JSON.parse(result);
                         minSongID = jsonObj.minSongID;
                         maxSongID = jsonObj.maxSongID;
@@ -311,7 +311,7 @@ $(document).ready(function(){
                     curec = maxSongID;
                 }
                 $("#txtSongID").val(curec);
-                var result = $.post("song.php", {"id": curec, "qtype": "7"}, function(result){
+                var result = $.post("song.php", {"id": curec, "qtype": "7", "edit": "null"}, function(result){
                     $("#tblDataGrid").html(result);
                 });
                 result.done(function(){
@@ -331,8 +331,8 @@ $(document).ready(function(){
             domRow[findGridIndex(curec)].removeAttribute("style");
             if (curec == maxSongID)
             {
-                $.post("song.php", {"id": --curec, "qtype": "1"}, prevSong);
-                $.post("song.php", {"id": curec, "qtype": "2"}, function(result){
+                $.post("song.php", {"id": --curec, "qtype": "1", "edit": "null"}, prevSong);
+                $.post("song.php", {"id": curec, "qtype": "2", "edit": "null"}, function(result){
                     var jsonObj = JSON.parse(result);
                     minSongID = jsonObj.minSongID;
                     maxSongID = jsonObj.maxSongID;
@@ -341,8 +341,8 @@ $(document).ready(function(){
             }
             else if (curec == minSongID)
             {
-                $.post("song.php", {"id": ++curec, "qtype": "1"}, nextSong);
-                $.post("song.php", {"id": curec, "qtype": "2"}, function(result){
+                $.post("song.php", {"id": ++curec, "qtype": "1", "edit": "null"}, nextSong);
+                $.post("song.php", {"id": curec, "qtype": "2", "edit": "null"}, function(result){
                     var jsonObj = JSON.parse(result);
                     minSongID = jsonObj.minSongID;
                     maxSongID = jsonObj.maxSongID;
@@ -351,9 +351,9 @@ $(document).ready(function(){
             }
             else if (curec != maxSongID)
             {
-                $.post("song.php", {"id": ++curec, "qtype": "1"}, nextSong);
+                $.post("song.php", {"id": ++curec, "qtype": "1", "edit": "null"}, nextSong);
             }
-            $.post("song.php", {"id": curec, "qtype": "7"}, function(result){
+            $.post("song.php", {"id": curec, "qtype": "7", "edit": "null"}, function(result){
                 $("#tblDataGrid").html(result);
             }).done(function(){
                 var domRow = document.getElementsByTagName("tr");
