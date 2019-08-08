@@ -24,9 +24,9 @@ if ($qtype == 1)
         echo "Error in executing query.</br>";
         die( print_r( sqlsrv_errors(), true));
     }
-
     /* Retreive and display the results of the query. */
     $row = sqlsrv_fetch_array($stmt);
+    $row = array_map('utf8_encode',$row); // accent character fix, aka Eres tú fix
     echo json_encode($row);
 }
 
