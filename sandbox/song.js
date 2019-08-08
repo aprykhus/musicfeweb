@@ -7,6 +7,7 @@ var curec = 0; // current record (SongID) on webpage. In other words, the cursor
 var minSongID = 0;
 var maxSongID = 0;
 var lastCurec = 0;
+const domRow = document.getElementsByTagName("tr");
 
 /* *****************************************************************************
 ***************************JAVASCRIPT FUNCTIONS*********************************
@@ -92,6 +93,8 @@ curec = 1;
         $("#txtTitle").val(jsonObj.Title);
         $("#txtYear").val(jsonObj.Year);
         $("#txtPeak").val(jsonObj.Peak);
+        domRow[findGridIndex(curec)].style.color = "red";
+        domRow[findGridIndex(curec)-1].scrollIntoView(true);
     }
  }
 
@@ -110,6 +113,16 @@ curec = 1;
         $("#txtTitle").val(jsonObj.Title);
         $("#txtYear").val(jsonObj.Year);
         $("#txtPeak").val(jsonObj.Peak);
+        var minGridID = Number(domRow[1].getElementsByTagName("td")[0].innerHTML);
+        domRow[findGridIndex(curec)].style.color = "red";
+        if (curec == minGridID)
+        {
+            domRow[findGridIndex(curec)-1].scrollIntoView(false);
+        }
+        else
+        {
+            domRow[findGridIndex(curec)-1].scrollIntoView(true);
+        }
     }
  }
 
@@ -151,29 +164,16 @@ $(document).ready(function(){
     $("#btnNext").click(function(){
         if (curec < maxSongID)
         {
-            var domRow = document.getElementsByTagName("tr");
             domRow[findGridIndex(curec)].removeAttribute("style");
             $.post("song.php", {"id": ++curec, "qtype": "1"}, nextSong);
-            domRow[findGridIndex(curec)].style.color = "red";
-            domRow[findGridIndex(curec)-1].scrollIntoView(true);
         }
     });
     $("#btnPrevious").click(function(){
         if (curec > minSongID)
         {
-            var domRow = document.getElementsByTagName("tr");
             domRow[findGridIndex(curec)].removeAttribute("style");
             $.post("song.php", {"id": --curec, "qtype": "1"}, prevSong);
-            var minGridID = Number(domRow[1].getElementsByTagName("td")[0].innerHTML);
-            domRow[findGridIndex(curec)].style.color = "red";
-            if (curec == minGridID)
-            {
-                domRow[findGridIndex(curec)-1].scrollIntoView(false);
-            }
-            else
-            {
-                domRow[findGridIndex(curec)-1].scrollIntoView(true);
-            }
+
         }
     });
     $("#btnFirst").click(function(){
