@@ -84,7 +84,7 @@ curec = 1;
     // if response is null (empty) re-run query (recursively)
     if (jsonObj == null)
     {
-        $.post("song.php", {"id": ++curec, "qtype": "1"}, nextSong);
+        $.post("song.php", {"id": ++curec, "qtype": "1", "edit": "null"}, nextSong);
     }
     else
     {
@@ -104,7 +104,7 @@ curec = 1;
     // if response is null (empty) re-run query (recursively)
     if (jsonObj == null)
     {
-        $.post("song.php", {"id": --curec, "qtype": "1"}, prevSong);
+        $.post("song.php", {"id": --curec, "qtype": "1", "edit": "null"}, prevSong);
     }
     else
     {
@@ -132,7 +132,7 @@ $(document).ready(function(){
     // $.cookie('curec', curec, {expires: 365});
     curec = Number(getCookie("curec")); // get cookie from last session
     // Grab min/max songID from SQL
-    $.post("song.php", {"id": curec, "qtype": "2"}, function(result){
+    $.post("song.php", {"id": curec, "qtype": "2", "edit": "null"}, function(result){
         var jsonObj = JSON.parse(result);
         minSongID = jsonObj.minSongID;
         maxSongID = jsonObj.maxSongID;
@@ -142,7 +142,7 @@ $(document).ready(function(){
             curec = minSongID;
         }
             // Initialize form once min/max is set
-        $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
+        $.post("song.php", {"id": curec, "qtype": "1", "edit": "null"}, function(result){
             var jsonObj = JSON.parse(result);
             $("#txtSongID").val(jsonObj.SongID);
             $("#txtArtist").val(jsonObj.Artist);
@@ -151,7 +151,7 @@ $(document).ready(function(){
             $("#txtPeak").val(jsonObj.Peak);
         }).done(function(){
             // Initialize grid once form is initialized
-            $.post("song.php", {"id": curec, "qtype": "7"}, function(result){
+            $.post("song.php", {"id": curec, "qtype": "7", "edit": "null"}, function(result){
                 $("#tblDataGrid").html(result);
             }).done(function(){
                 var domRow = document.getElementsByTagName("tr");
@@ -165,14 +165,14 @@ $(document).ready(function(){
         if (curec < maxSongID)
         {
             domRow[findGridIndex(curec)].removeAttribute("style");
-            $.post("song.php", {"id": ++curec, "qtype": "1"}, nextSong);
+            $.post("song.php", {"id": ++curec, "qtype": "1", "edit": "null"}, nextSong);
         }
     });
     $("#btnPrevious").click(function(){
         if (curec > minSongID)
         {
             domRow[findGridIndex(curec)].removeAttribute("style");
-            $.post("song.php", {"id": --curec, "qtype": "1"}, prevSong);
+            $.post("song.php", {"id": --curec, "qtype": "1", "edit": "null"}, prevSong);
 
         }
     });
@@ -180,7 +180,7 @@ $(document).ready(function(){
         var domRow = document.getElementsByTagName("tr");
         domRow[findGridIndex(curec)].removeAttribute("style");
         curec = minSongID;
-        $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
+        $.post("song.php", {"id": curec, "qtype": "1", "edit": "null"}, function(result){
             var jsonObj = JSON.parse(result);
             $("#txtSongID").val(jsonObj.SongID);
             $("#txtArtist").val(jsonObj.Artist);
@@ -196,7 +196,7 @@ $(document).ready(function(){
         var domRow = document.getElementsByTagName("tr");
         domRow[findGridIndex(curec)].removeAttribute("style");
         curec = maxSongID;
-        $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
+        $.post("song.php", {"id": curec, "qtype": "1", "edit": "null"}, function(result){
             var jsonObj = JSON.parse(result);
             $("#txtSongID").val(jsonObj.SongID);
             $("#txtArtist").val(jsonObj.Artist);
@@ -216,7 +216,7 @@ $(document).ready(function(){
             alert("Invalid SongID. Try again.");
             curec = lastCurec;
         }
-        $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
+        $.post("song.php", {"id": curec, "qtype": "1", "edit": "null"}, function(result){
             var jsonObj = JSON.parse(result);
             if (jsonObj == null) {
                 alert("Sorry, that SongID doesn't exist.");
