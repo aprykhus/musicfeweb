@@ -373,7 +373,7 @@ $(document).ready(function(){
         {
             var domRow = document.getElementsByTagName("tr");
             domRow[findGridIndex(oldcurec)].removeAttribute("style");
-            $.post("song.php", {"id": curec, "qtype": "1"}, function(result){
+            $.post("song.php", {"id": curec, "qtype": "1", "edit": "null"}, function(result){
                 var jsonObj = JSON.parse(result);
                 if (jsonObj == null) {
                     alert("Sorry, that SongID doesn't exist.");
