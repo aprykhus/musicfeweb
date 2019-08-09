@@ -157,6 +157,8 @@ $(document).ready(function(){
                 var domRow = document.getElementsByTagName("tr");
                 domRow[findGridIndex(curec)].style.color = "red";
                 domRow[findGridIndex(curec)-1].scrollIntoView(true);
+                // Show total records
+                $("#txtTotal").text(domRow.length);
             });
         });
     });
@@ -317,6 +319,7 @@ $(document).ready(function(){
                 result.done(function(){
                     domRow[findGridIndex(curec)].style.color = "red";
                     domRow[findGridIndex(curec)-1].scrollIntoView(true);
+                    $("#txtTotal").text(domRow.length); // update total
                 });
             }
         });
@@ -359,6 +362,7 @@ $(document).ready(function(){
                 var domRow = document.getElementsByTagName("tr");
                 domRow[findGridIndex(curec)].style.color = "red";
                 domRow[findGridIndex(curec)-1].scrollIntoView(true);
+                $("#txtTotal").text(domRow.length); // update total
             });
         });
     });
