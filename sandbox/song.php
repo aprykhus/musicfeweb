@@ -130,11 +130,12 @@ if ($qtype == 6)
 
 if ($qtype == 7 || $qtype == 8)
 {
-    # populate table
+    # build populate table query string
     if ($qtype == 7)
     {
         $tsql = "SELECT * FROM vw_ListSongs ORDER BY SongID";
     }
+    # build search results query string
     if ($qtype == 8)
     {
         $tsql = "";
