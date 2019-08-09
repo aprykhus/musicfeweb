@@ -417,6 +417,6 @@ $(document).ready(function(){
     $("#btnRandom").click(function(){
         domRow[findGridIndex(curec)].removeAttribute("style");
         curec = Math.round(Math.random()*maxSongID);
-        $.post("song.php", {"id": ++curec, "qtype": "1", "edit": "null"}, nextSong);
+        $.post("song.php", {"id": curec, "qtype": "1", "edit": "null"}, nextSong);
     });
 });
