@@ -132,6 +132,8 @@ $(document).ready(function(){
     $(window).on("beforeunload", setCurecCookie); // cookie event handler
     // $.cookie('curec', curec, {expires: 365});
     curec = Number(getCookie("curec")); // get cookie from last session
+    // Set default Playlist length
+    $("#txtPlayList").val(10);
     // Grab min/max songID from SQL
     $.post("song.php", {"id": curec, "qtype": "2", "edit": "null"}, function(result){
         var jsonObj = JSON.parse(result);
@@ -450,7 +452,8 @@ $(document).ready(function(){
             $("#txtPlayList").val() < 1)
         {
             $("#lblPlayListValid").text("Enter a value between 1 and " 
-                + String(domRow.length - 1)).css({"color": "red"});
+                + String(domRow.length - 1))
+                .css({"color": "red", "font-size": "8pt"});
         }
         else
         {
