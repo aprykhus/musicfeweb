@@ -161,7 +161,7 @@ $(document).ready(function(){
                 domRow[findGridIndex(curec)].style.color = "red";
                 domRow[findGridIndex(curec)-1].scrollIntoView(true);
                 // Show total records
-                $("#txtTotal").text(domRow.length);
+                $("#txtTotal").text($("#tblDataGrid tr").length-1);
             });
         });
     });
@@ -178,7 +178,6 @@ $(document).ready(function(){
         {
             domRow[findGridIndex(curec)].removeAttribute("style");
             $.post("song.php", {"id": --curec, "qtype": "1", "edit": "null"}, prevSong);
-
         }
     });
     $("#btnFirst").click(function(){
@@ -322,7 +321,7 @@ $(document).ready(function(){
                 result.done(function(){
                     domRow[findGridIndex(curec)].style.color = "red";
                     domRow[findGridIndex(curec)-1].scrollIntoView(true);
-                    $("#txtTotal").text(domRow.length); // update total
+                    $("#txtTotal").text($("#tblDataGrid tr").length-1); // update total
                 });
             }
         });
@@ -362,10 +361,9 @@ $(document).ready(function(){
             $.post("song.php", {"id": curec, "qtype": "7", "edit": "null"}, function(result){
                 $("#tblDataGrid").html(result);
             }).done(function(){
-                var domRow = document.getElementsByTagName("tr");
                 domRow[findGridIndex(curec)].style.color = "red";
                 domRow[findGridIndex(curec)-1].scrollIntoView(true);
-                $("#txtTotal").text(domRow.length); // update total
+                $("#txtTotal").text($("#tblDataGrid tr").length-1); // update total
             });
         });
     });
