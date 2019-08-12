@@ -422,7 +422,7 @@ $(document).ready(function(){
     });
 
     // Generate Playlist
-    $("#btnPlaylist").click(function(){
+    $("#btnPlayList").click(function(){
         var arrPlayList = [];
         var rndPick = 0;
         var playListLength = Number($("#txtPlayList").val());
@@ -442,6 +442,20 @@ $(document).ready(function(){
                 $("#tblPlayList").html(result);
             }
         });
+    });
+
+    // Validate Playlist length
+    $("#txtPlayList").on("keyup", function(){
+        if ($("#txtPlayList").val() > domRow.length - 1 || 
+            $("#txtPlayList").val() < 1)
+        {
+            $("#lblPlayListValid").text("Enter a value between 1 and " 
+                + String(domRow.length - 1)).css({"color": "red"});
+        }
+        else
+        {
+            $("#lblPlayListValid").text("");
+        }
     });
 
 });

@@ -20,8 +20,9 @@
          <button type="button" class="btn2" id="btnGo" style="width:40px" tabindex="2">Go</button>
          <button type="button" class="btn2" id="btnClear" style="width:50px" tabindex="3">Clear</button>
          <button type="button" class="btn2" id="btnRandom" style="width:70px" tabindex="4" >Random</button>
-         <button type="button" class="btn2" id="btnPlaylist" tabindex="5" >Playlist</button>
+         <button type="button" class="btn2" id="btnPlayList" tabindex="5" >Playlist</button>
          <span>Length: </span><input type="text" id="txtPlayList" style="width: 50px" tabindex="6" value="10">
+         <span id="lblPlayListValid"></span>
          <br><br>
          <span style="padding-left: 28px">Artist:</span><span style="padding-left: 4px"><input type="text" id="txtArtist" style="width: 300px" tabindex="7"></span><span class="lblValidate">Artist and Title fields cannot both be blank</span><br><br>
          <span style="padding-left: 36px">Title:</span><span style="padding-left: 4px"><input type="text" id="txtTitle" style="width: 300px" tabindex="8"></span><span class="lblValidate">Artist and Title fields cannot both be blank</span><br><br>
@@ -33,7 +34,7 @@
          <button type="button" class="btn3" id="btnPrevious" tabindex="12">Previous</button>
          <button type="button" class="btn3" id="btnNext" tabindex="13">Next</button>
          <button type="button" class="btn3" id="btnLast" tabindex="14">Last</button>
-         <div style="float:right; padding-top: 15px">
+         <div style="padding-top: 15px; display:inline">
             <span>Search: </span><input type="text" id="txtSearch">
          </div>
       </div>
