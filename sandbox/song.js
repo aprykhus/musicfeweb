@@ -459,6 +459,15 @@ $(document).ready(function(){
         {
             $("#lblPlayListValid").text("");
         }
+        if (isNaN($("#txtPlayList").val()) === true)
+        {
+            $("#lblPlayListValid2").text("Enter a number")
+            .css({"color": "red", "font-size": "8pt"});
+        }
+        else
+        {
+            $("#lblPlayListValid2").text("");
+        }
     });
 
 });
