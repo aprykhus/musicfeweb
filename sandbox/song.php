@@ -6,6 +6,30 @@ $qupdate = $_REQUEST["edit"]; # JSON data to update song
 $serverName = "(local)\SQLEXPRESS";
 $connectionInfo = array( "Database"=>"Music");
 
+// FUNCTIONS
+function validateSongID($num)
+{
+    # if zero rows returned on query return false, else return true.
+    global $conn;
+    $tsql = "SELECT * FROM vw_ListSongs WHERE SongID = ".$num;
+    $stmt = sqlsrv_query($conn, $tsql);
+    if( $stmt === false)
+    {
+        echo "Error in executing query.</br>";
+        die( print_r( sqlsrv_errors(), true));
+    }
+    /* Retreive and display the results of the query. */
+    $row = sqlsrv_fetch_array($stmt);
+    if (is_null($row))
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
 /* Connect using Windows Authentication. */
 $conn = sqlsrv_connect( $serverName, $connectionInfo);
 if( $conn === false )
@@ -185,6 +209,70 @@ if ($qtype == 7 || $qtype == 8)
     }
     echo "</tbody>";
     echo "</table>";
+}
+
+# generate playlist
+if ($qtype == 9)
+{
+    # Fetch max songID to generate random int for invalid songIDs
+    $tsql = "Select MIN(SongID) AS minSongID, MAX(SongID) AS maxSongID FROM vw_ListSongs";
+    $stmt = sqlsrv_query( $conn, $tsql);
+    if( $stmt === false)
+    {
+        echo "Error in executing query.</br>";
+        die( print_r( sqlsrv_errors(), true));
+    }
+    $row = sqlsrv_fetch_array($stmt);
+    $minSongID = $row[0];
+    $maxSongID = $row[1];
+
+    # Fetch playlist
+    $tsql = "SELECT * FROM vw_ListSongs WHERE SongID = ";
+    $jsonarr = json_decode($qupdate, true);
+    $songarr = $jsonarr['songid'];
+    echo "<table>";
+    echo "<thead>
+    <tr>
+        <th>SongID</th>
+        <th>Artist</th>
+        <th>Title</th>
+        <th>Year</th>
+        <th>Peak</th>
+    </tr>
+    </thead>
+    <tbody>
+    ";
+    for ($i = 0; $i < sizeof($songarr); $i++)
+    {
+        $tsql = "SELECT * FROM vw_ListSongs WHERE SongID = ".$songarr[$i];
+        $stmt = sqlsrv_query($conn, $tsql);
+        if( $stmt === false)
+        {
+            echo "Error in executing query.</br>";
+            die( print_r( sqlsrv_errors(), true));
+        }
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+        #handle null results
+        if (is_null($row))
+        {
+            while (is_null($row))
+            {
+            /* echo "No song for this SongID: ".$songarr[$i];
+            continue; */
+            $tsql = "SELECT * FROM vw_ListSongs WHERE SongID = ".rand($minSongID, $maxSongID);
+            $stmt = sqlsrv_query($conn, $tsql);
+            if( $stmt === false)
+            {
+                echo "Error in executing query.</br>";
+                die( print_r( sqlsrv_errors(), true));
+            }
+            $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+            }
+        }
+        echo "<tr><td>".$row['SongID']."</td><td>".utf8_encode($row['Artist'])
+        ."</td><td>".utf8_encode($row['Title'])."</td><td>".$row['Year']
+        ."</td><td>".$row['Peak']."</td></tr>";
+    }
 }
 
 /* Free statement and connection resources. */

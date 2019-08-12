@@ -9,6 +9,7 @@ var maxSongID = 0;
 var lastCurec = 0;
 const domRow = document.getElementsByTagName("tr");
 
+
 /* *****************************************************************************
 ***************************JAVASCRIPT FUNCTIONS*********************************
  **************************************************************************** */
@@ -419,4 +420,28 @@ $(document).ready(function(){
         curec = Math.round(Math.random()*maxSongID);
         $.post("song.php", {"id": curec, "qtype": "1", "edit": "null"}, nextSong);
     });
+
+    // Generate Playlist
+    $("#btnPlaylist").click(function(){
+        var arrPlayList = [];
+        var rndPick = 0;
+        var playListLength = Number($("#txtPlayList").val());
+        // Todo: length validation against domRow.length
+        for (let i = 0; i < playListLength; i++)
+        {
+            rndPick = Math.round(Math.random()*maxSongID);
+            arrPlayList.push(rndPick);
+        }
+        var jsonPlayList = JSON.stringify({songid: arrPlayList});
+
+        $.ajax({
+            url: "song.php",
+            method: "POST",
+            data: "id=" + curec + "&qtype=9&edit=" + jsonPlayList,
+            success: function(result){
+                $("#tblPlayList").html(result);
+            }
+        });
+    });
+
 });
